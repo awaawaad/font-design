@@ -670,7 +670,7 @@
         <span class="side-cnt">1/10</span>
       </label>
         </nav>
-<a class="ppt-btn ppt-sq" href="files/3671867e7b.pptx" download="测试PPT.pptx" title="下载本作业 PPT"><span class="t">PPT</span><span class="s">0.0 MB</span><span class="a">↓</span></a>
+<a class="ppt-btn ppt-sq" href="files/3671867e7b.pptx" download="测试PPT.pptx" title="下载本作业 PPT" onclick="event.preventDefault();var a=this;fetch(a.href).then(function(r){return r.blob();}).then(function(b){var u=URL.createObjectURL(b);var l=document.createElement('a');l.href=u;l.download=a.getAttribute('download')||'download.pptx';document.body.appendChild(l);l.click();document.body.removeChild(l);setTimeout(function(){URL.revokeObjectURL(u);},8000);}).catch(function(){location.href=a.href;});"><span class="t">PPT</span><span class="s">0.0 MB</span><span class="a">↓</span></a>
       </div>
       <div class="stage">
       <div class="group-panel" id="w1-p0">
