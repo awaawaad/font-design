@@ -136,6 +136,41 @@
   ##w1-g2:checked ~ .layout .side label[for="w1-g2"] .side-cnt{color:#FFB066 !important;}
   ##w1-g2:checked ~ .layout .side label[for="w1-g2"] .side-name{color:#FFFFFF !important;}
   #w1-g2:checked ~ .layout .stage #w1-p2{display:block;}
+  ##w2-g0:checked ~ .layout .side label[for="w2-g0"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
+  ##w2-g0:checked ~ .layout .side label[for="w2-g0"] .side-idx,
+  ##w2-g0:checked ~ .layout .side label[for="w2-g0"] .side-cnt{color:#FFB066 !important;}
+  ##w2-g0:checked ~ .layout .side label[for="w2-g0"] .side-name{color:#FFFFFF !important;}
+  #w2-g0:checked ~ .layout .stage #w2-p0{display:block;}
+  ##w2-g1:checked ~ .layout .side label[for="w2-g1"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
+  ##w2-g1:checked ~ .layout .side label[for="w2-g1"] .side-idx,
+  ##w2-g1:checked ~ .layout .side label[for="w2-g1"] .side-cnt{color:#FFB066 !important;}
+  ##w2-g1:checked ~ .layout .side label[for="w2-g1"] .side-name{color:#FFFFFF !important;}
+  #w2-g1:checked ~ .layout .stage #w2-p1{display:block;}
+  ##w2-g2:checked ~ .layout .side label[for="w2-g2"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
+  ##w2-g2:checked ~ .layout .side label[for="w2-g2"] .side-idx,
+  ##w2-g2:checked ~ .layout .side label[for="w2-g2"] .side-cnt{color:#FFB066 !important;}
+  ##w2-g2:checked ~ .layout .side label[for="w2-g2"] .side-name{color:#FFFFFF !important;}
+  #w2-g2:checked ~ .layout .stage #w2-p2{display:block;}
+  ##w2-g3:checked ~ .layout .side label[for="w2-g3"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
+  ##w2-g3:checked ~ .layout .side label[for="w2-g3"] .side-idx,
+  ##w2-g3:checked ~ .layout .side label[for="w2-g3"] .side-cnt{color:#FFB066 !important;}
+  ##w2-g3:checked ~ .layout .side label[for="w2-g3"] .side-name{color:#FFFFFF !important;}
+  #w2-g3:checked ~ .layout .stage #w2-p3{display:block;}
+  ##w2-g4:checked ~ .layout .side label[for="w2-g4"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
+  ##w2-g4:checked ~ .layout .side label[for="w2-g4"] .side-idx,
+  ##w2-g4:checked ~ .layout .side label[for="w2-g4"] .side-cnt{color:#FFB066 !important;}
+  ##w2-g4:checked ~ .layout .side label[for="w2-g4"] .side-name{color:#FFFFFF !important;}
+  #w2-g4:checked ~ .layout .stage #w2-p4{display:block;}
+  ##w2-g5:checked ~ .layout .side label[for="w2-g5"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
+  ##w2-g5:checked ~ .layout .side label[for="w2-g5"] .side-idx,
+  ##w2-g5:checked ~ .layout .side label[for="w2-g5"] .side-cnt{color:#FFB066 !important;}
+  ##w2-g5:checked ~ .layout .side label[for="w2-g5"] .side-name{color:#FFFFFF !important;}
+  #w2-g5:checked ~ .layout .stage #w2-p5{display:block;}
+  ##w2-g6:checked ~ .layout .side label[for="w2-g6"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
+  ##w2-g6:checked ~ .layout .side label[for="w2-g6"] .side-idx,
+  ##w2-g6:checked ~ .layout .side label[for="w2-g6"] .side-cnt{color:#FFB066 !important;}
+  ##w2-g6:checked ~ .layout .side label[for="w2-g6"] .side-name{color:#FFFFFF !important;}
+  #w2-g6:checked ~ .layout .stage #w2-p6{display:block;}
 
   @media(max-width:1200px){ .grid{grid-template-columns:repeat(4,1fr);} }
   @media(max-width:960px){
@@ -157,6 +192,32 @@
     .work-tabs label{font-size:10px;padding:8px 10px;letter-spacing:.03em;}
     .stage-tag{display:none;}
   }
+
+  /* ── 第二次作业：宽幅 + 民族厚边框 ── */
+  .work-note{border:1px solid var(--line);background:rgba(250,250,250,.94);padding:24px 28px;
+    margin:0 0 28px;max-width:1180px;border-radius:12px;}
+  .work-note h3{font-size:15px;font-weight:700;letter-spacing:.08em;color:#111;margin:16px 0 6px;}
+  .work-note h3:first-child{margin-top:0;}
+  .work-note p{font-size:13.5px;line-height:2;color:#3A3A3A;}
+
+  .grid.wide{grid-template-columns:1fr;gap:22px;}
+  .grid.wide figure{aspect-ratio:16/9;}
+  .grid.wide figure .art{inset:0;background-size:cover;border-radius:0;mix-blend-mode:normal;}
+
+  .group-panel.skin-yi figure{border:10px solid #1a0f0c;
+    box-shadow:inset 0 0 0 3px #8f1d12,inset 0 0 0 7px #1a0f0c,0 0 0 1px rgba(176,120,40,.35);}
+  .group-panel.skin-bai figure{border:9px solid #2c4d72;
+    box-shadow:inset 0 0 0 5px rgba(232,240,248,.28),0 0 0 1px #2c4d72;}
+  .group-panel.skin-miao figure{border:8px solid #6e7680;
+    box-shadow:inset 0 0 0 2px #11151a,inset 0 0 0 5px #aab4bf,0 0 0 2px rgba(210,220,232,.22);}
+  .group-panel.skin-dai figure{border:9px solid #14514a;
+    box-shadow:inset 0 0 0 3px #0d2f2b,inset 0 0 0 6px rgba(201,164,86,.35);}
+  .group-panel.skin-naxi figure{border:10px solid #4a3520;
+    box-shadow:inset 0 0 0 3px #b98f4e;}
+  .group-panel.skin-wa figure{border:12px solid #101010;
+    box-shadow:inset 0 0 0 4px #7d1f16,inset 0 0 0 8px #101010;}
+  .group-panel.skin-zang figure{border:11px solid #7a1a12;
+    box-shadow:inset 0 0 0 4px #d9a02a,inset 0 0 0 7px #7a1a12;}
 
   /* ── 圆角 ── */
   figure{border-radius:10px;overflow:hidden;}
@@ -647,6 +708,7 @@
   <div class="works">
 <section class="work" id="work-w1">
     <div class="stage-head"><h2>数字 字母 字体设计作业</h2></div>
+    
     <input class="g-radio" type="radio" name="grp-w1" id="w1-g0" checked>
     <input class="g-radio" type="radio" name="grp-w1" id="w1-g1">
     <input class="g-radio" type="radio" name="grp-w1" id="w1-g2">
@@ -716,9 +778,89 @@
     </div>
   </section>
 <section class="work" id="work-w2">
-      
-      <div class="stub"><div class="icon">🚧</div><h3>第二次作业</h3><p>此处预留 · 待完成</p></div>
-    </section>
+    <div class="stage-head"><h2>第二次作业 · 民族风格字母字体设计</h2></div>
+    <div class="work-note"><h3>调研</h3><p>取样范围：云南世居少数民族（共 25 个）。从中选出 7 个视觉符号辨识度最高的民族作为分组依据 —— 彝族（漆器几何 / 火纹）、白族（扎染波纹）、苗族（银饰几何）、傣族（竹楼与孔雀）、纳西族（东巴象形文）、佤族（木鼓与牛头）、藏族（藏红回纹）。取样来源为公开图像资料与博物馆展陈记录，按「轮廓 — 几何 — 节奏」三个维度做视觉提取，不复制原纹样。</p><h3>设计说明</h3><p>26 个拉丁字母是现成的结构骨架，适合作为视觉基因的容器。每组先提取该民族核心符号的几何秩序，再装入字母的笔画结构；配色取自各民族服饰与器物的主色，统一压暗、降饱和，收进同一套色域：米白 / 近黑 / 暗红 / 赭黄 / 靛蓝。</p><h3>局限</h3><p>本组只做视觉提取与形态重组，未做民族学层面的考据；色彩与符号均作简化处理，不指代具体支系与地域差异。</p></div>
+    <input class="g-radio" type="radio" name="grp-w2" id="w2-g0" checked>
+    <input class="g-radio" type="radio" name="grp-w2" id="w2-g1">
+    <input class="g-radio" type="radio" name="grp-w2" id="w2-g2">
+    <input class="g-radio" type="radio" name="grp-w2" id="w2-g3">
+    <input class="g-radio" type="radio" name="grp-w2" id="w2-g4">
+    <input class="g-radio" type="radio" name="grp-w2" id="w2-g5">
+    <input class="g-radio" type="radio" name="grp-w2" id="w2-g6">
+    <div class="layout">
+      <div class="side-col" style="width:var(--side);flex-shrink:0;">
+        <nav class="side">
+
+      <label class="side-item" for="w2-g0">
+        <span class="side-idx">01</span>
+        <span class="side-name">彝族</span>
+        <span class="side-cnt">1/1</span>
+      </label>
+      <label class="side-item" for="w2-g1">
+        <span class="side-idx">02</span>
+        <span class="side-name">白族</span>
+        <span class="side-cnt">1/1</span>
+      </label>
+      <label class="side-item" for="w2-g2">
+        <span class="side-idx">03</span>
+        <span class="side-name">苗族</span>
+        <span class="side-cnt">1/1</span>
+      </label>
+      <label class="side-item" for="w2-g3">
+        <span class="side-idx">04</span>
+        <span class="side-name">傣族</span>
+        <span class="side-cnt">1/1</span>
+      </label>
+      <label class="side-item" for="w2-g4">
+        <span class="side-idx">05</span>
+        <span class="side-name">纳西族</span>
+        <span class="side-cnt">1/1</span>
+      </label>
+      <label class="side-item" for="w2-g5">
+        <span class="side-idx">06</span>
+        <span class="side-name">佤族</span>
+        <span class="side-cnt">1/1</span>
+      </label>
+      <label class="side-item" for="w2-g6">
+        <span class="side-idx">07</span>
+        <span class="side-name">藏族</span>
+        <span class="side-cnt">1/1</span>
+      </label>
+        </nav>
+<a class="ppt-btn ppt-sq" href="files/c656175725.pptx" download="字体构成作业-温博文-作业2.pptx" title="下载本作业 PPT" onclick="event.preventDefault();var a=this;fetch(a.href).then(function(r){return r.blob();}).then(function(b){var u=URL.createObjectURL(b);var l=document.createElement('a');l.href=u;l.download=a.getAttribute('download')||'download.pptx';document.body.appendChild(l);l.click();document.body.removeChild(l);setTimeout(function(){URL.revokeObjectURL(u);},8000);}).catch(function(){location.href=a.href;});"><span class="t">PPT</span><span class="s">5.1 MB</span><span class="a">↓</span></a>
+      </div>
+      <div class="stage">
+      <div class="group-panel skin-yi" id="w2-p0">
+        <div class="stage-head"><h2>彝族</h2><span class="stage-tag">漆器几何 · 黑红黄</span></div>
+        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/6ae83a9595.jpg')"></div></figure></div>
+      </div>
+      <div class="group-panel skin-bai" id="w2-p1">
+        <div class="stage-head"><h2>白族</h2><span class="stage-tag">扎染波纹 · 蓝白</span></div>
+        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/7909a56012.jpg')"></div></figure></div>
+      </div>
+      <div class="group-panel skin-miao" id="w2-p2">
+        <div class="stage-head"><h2>苗族</h2><span class="stage-tag">银饰几何 · 银黑</span></div>
+        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/96366b34ab.jpg')"></div></figure></div>
+      </div>
+      <div class="group-panel skin-dai" id="w2-p3">
+        <div class="stage-head"><h2>傣族</h2><span class="stage-tag">竹节孔雀 · 松石绿</span></div>
+        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/cebdfc9a53.jpg')"></div></figure></div>
+      </div>
+      <div class="group-panel skin-naxi" id="w2-p4">
+        <div class="stage-head"><h2>纳西族</h2><span class="stage-tag">东巴文骨架 · 大地棕</span></div>
+        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/1db5addbb7.jpg')"></div></figure></div>
+      </div>
+      <div class="group-panel skin-wa" id="w2-p5">
+        <div class="stage-head"><h2>佤族</h2><span class="stage-tag">木鼓牛角 · 黑红</span></div>
+        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/1f1c8855ab.jpg')"></div></figure></div>
+      </div>
+      <div class="group-panel skin-zang" id="w2-p6">
+        <div class="stage-head"><h2>藏族</h2><span class="stage-tag">藏红回纹 · 红黄</span></div>
+        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/335fbfa941.jpg')"></div></figure></div>
+      </div>
+      </div>
+    </div>
+  </section>
 <section class="work" id="work-w3">
       
       <div class="stub"><div class="icon">🚧</div><h3>第三次作业</h3><p>此处预留 · 待完成</p></div>
