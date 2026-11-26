@@ -1,699 +1,616 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
 <title>字体设计 · 线构成研究</title>
-<style>.ppt-sq{display:flex;flex-direction:column;align-items:center;justify-content:center;width:82px;height:82px;margin:16px auto 0;border-radius:16px;gap:3px;background:rgba(22,22,40,.62);border:1px solid rgba(255,255,255,.14);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:#fff;text-decoration:none;transition:background .28s,border-color .28s,transform .28s,box-shadow .28s;}.ppt-sq:hover{background:rgba(232,93,4,.24);border-color:rgba(232,93,4,.7);transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.35);}.ppt-sq:active{transform:translateY(0) scale(.97);}.ppt-sq .t{font-size:13px;font-weight:700;letter-spacing:.10em;line-height:1;}.ppt-sq .s{font-size:9px;letter-spacing:.12em;color:rgba(255,255,255,.55);line-height:1;}.ppt-sq .a{font-size:11px;color:#E85D04;line-height:1;}.ppt-sq.off{background:rgba(22,22,40,.34);border:1px dashed rgba(255,255,255,.20);cursor:default;}.ppt-sq.off:hover{transform:none;box-shadow:none;background:rgba(22,22,40,.34);border-color:rgba(255,255,255,.20);}.ppt-sq.off .t{color:rgba(255,255,255,.55);}@media (max-width:560px){.ppt-sq{width:64px;height:64px;margin-top:10px;border-radius:13px;}.ppt-sq .t{font-size:11px;}.ppt-sq .s{display:none;}}</style>
 <style>
-  :root{
-    --bg:#FFFFFF;--panel:#FAFAFA;--line:#E2E2E2;--line-hi:#C8C8C8;
-    --text:#1A1A1A;--dim:#8A8A8A;--faint:#E0E0E0;--accent:#E85D04;
-    --side:210px;
-    --ph:url("img/d953362a31.jpg");
-    --sans:"PingFang SC","Microsoft YaHei","Source Han Sans SC","Noto Sans SC",system-ui,sans-serif;
-    --mono:"JetBrains Mono","Cascadia Mono",Consolas,monospace;
+/* ═══════════════════════════════════════════════
+   设计系统：变量 / 重置
+   ═══════════════════════════════════════════════ */
+:root{
+  --bg:#0A0A16;
+  --bg-deep:#060610;
+  --panel:rgba(18,18,36,.78);
+  --panel-solid:#121226;
+  --line:rgba(255,255,255,.09);
+  --line-hi:rgba(255,255,255,.18);
+  --text:#F3F4F8;
+  --dim:rgba(255,255,255,.56);
+  --muted:rgba(255,255,255,.32);
+  --accent:#E85D04;
+  --accent-2:#FF8C42;
+  --accent-hi:#FFB066;
+  --accent-bg:rgba(232,93,4,.18);
+  --accent-glow:rgba(232,93,4,.36);
+  --accent-grad:linear-gradient(135deg,#E85D04 0%,#FF8C42 100%);
+  --side:224px;
+  --radius:14px;
+  --radius-sm:10px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sans:"PingFang SC","Microsoft YaHei","Source Han Sans SC","Noto Sans SC",system-ui,sans-serif;
+  --mono:"JetBrains Mono","Cascadia Mono",Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:var(--sans);font-size:15px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ── 全局光谱弧线背景 + 柔和渐变融合 ── */
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("img/6ded683a64.jpg");
+  background-size:auto 122%;background-position:-16px center;background-repeat:no-repeat;
+  background-attachment:fixed;
+  opacity:.62;z-index:0;pointer-events:none;
+}
+body::after{
+  content:"";position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 75% 50% at 50% -8%,rgba(232,93,4,.14) 0%,transparent 70%),
+    linear-gradient(90deg,rgba(10,10,22,.18) 0%,rgba(10,10,22,.72) 28%,rgba(10,10,22,.92) 65%,rgba(10,10,22,.96) 100%);
+  z-index:0;pointer-events:none;
+}
+
+.w-radio,.g-radio{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;}
+
+/* ═══════════════════════════════════════════════
+   主体容器 & 头部
+   ═══════════════════════════════════════════════ */
+.wrap{position:relative;z-index:1;max-width:1380px;margin:0 auto;padding:0 36px 96px;}
+
+header{padding:72px 0 48px;position:relative;}
+.header-top{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;
+  margin-bottom:22px;
+}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--accent-2);display:flex;align-items:center;gap:14px;
+}
+.eyebrow::before{content:"";width:36px;height:2px;background:var(--accent-grad);border-radius:1px;}
+.course-pill{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--dim);
+  padding:6px 14px;border-radius:999px;border:1px solid var(--line);
+  background:rgba(18,18,36,.65);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:inline-flex;align-items:center;gap:8px;
+}
+.course-pill .dot{
+  width:7px;height:7px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 10px var(--accent);
+}
+h1{
+  font-size:clamp(32px,5vw,60px);line-height:1.12;font-weight:700;
+  margin-bottom:10px;letter-spacing:-.01em;
+  background:linear-gradient(180deg,#fff 45%,rgba(255,255,255,.72) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.subtitle{
+  font-size:clamp(14px,1.5vw,17px);color:var(--dim);letter-spacing:.06em;font-weight:400;
+}
+.meta{
+  display:flex;flex-wrap:wrap;gap:24px 44px;margin-top:34px;padding-top:22px;
+  border-top:1px solid var(--line);font-size:12px;letter-spacing:.08em;
+}
+.meta dt{
+  font-family:var(--mono);margin-bottom:4px;color:var(--muted);
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+}
+.meta dd{font-size:14px;font-weight:500;color:var(--text);}
+
+/* ═══════════════════════════════════════════════
+   顶部作业 Tab（纯 CSS radio 驱动）
+   ═══════════════════════════════════════════════ */
+.work-tabs{
+  display:flex;flex-wrap:wrap;gap:8px;
+  padding:10px;margin-bottom:36px;
+  border:1px solid var(--line);
+  background:rgba(16,16,32,.82);
+  border-radius:16px;
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  position:sticky;top:12px;z-index:30;
+  box-shadow:0 10px 34px rgba(0,0,0,.38);
+}
+.work-tabs label{
+  flex:1 1 auto;min-width:130px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-size:13px;font-weight:500;letter-spacing:.04em;
+  padding:11px 18px;border:1px solid transparent;color:var(--dim);
+  border-radius:var(--radius-sm);cursor:pointer;
+  transition:all .24s var(--ease);user-select:none;white-space:nowrap;
+  position:relative;overflow:hidden;
+}
+.work-tabs label .tab-num{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  color:var(--muted);transition:color .24s;
+}
+.work-tabs label .tab-cnt{
+  font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  padding:2px 7px;border-radius:999px;
+  background:rgba(255,255,255,.06);color:var(--muted);
+  transition:all .24s;
+}
+.work-tabs label:hover{color:#fff;background:rgba(255,255,255,.05);}
+.work-tabs label:hover .tab-num,.work-tabs label:hover .tab-cnt{color:rgba(255,255,255,.72);}
+.work-tabs label::after{
+  content:"";position:absolute;bottom:0;left:18%;right:18%;height:2px;
+  background:var(--accent-grad);border-radius:2px;
+  opacity:0;transform:scaleX(0);transition:all .26s var(--ease);
+}
+
+#work-r1:checked ~ .work-tabs label[for="work-r1"],
+#work-r2:checked ~ .work-tabs label[for="work-r2"],
+#work-r3:checked ~ .work-tabs label[for="work-r3"],
+#work-r4:checked ~ .work-tabs label[for="work-r4"]{
+  background:rgba(232,93,4,.14);border-color:rgba(232,93,4,.36);
+  color:#fff;font-weight:600;
+  box-shadow:0 4px 20px rgba(232,93,4,.12);
+}
+#work-r1:checked ~ .work-tabs label[for="work-r1"] .tab-num,
+#work-r2:checked ~ .work-tabs label[for="work-r2"] .tab-num,
+#work-r3:checked ~ .work-tabs label[for="work-r3"] .tab-num,
+#work-r4:checked ~ .work-tabs label[for="work-r4"] .tab-num{color:var(--accent-2);}
+#work-r1:checked ~ .work-tabs label[for="work-r1"] .tab-cnt,
+#work-r2:checked ~ .work-tabs label[for="work-r2"] .tab-cnt,
+#work-r3:checked ~ .work-tabs label[for="work-r3"] .tab-cnt,
+#work-r4:checked ~ .work-tabs label[for="work-r4"] .tab-cnt{
+  background:rgba(232,93,4,.22);color:var(--accent-hi);
+}
+#work-r1:checked ~ .work-tabs label[for="work-r1"]::after,
+#work-r2:checked ~ .work-tabs label[for="work-r2"]::after,
+#work-r3:checked ~ .work-tabs label[for="work-r3"]::after,
+#work-r4:checked ~ .work-tabs label[for="work-r4"]::after{
+  opacity:1;transform:scaleX(1);
+}
+
+.works{position:relative;z-index:2;}
+.work{display:none;animation:fadeUp .38s var(--ease) both;}
+#work-r1:checked ~ .works #work-w1,
+#work-r2:checked ~ .works #work-w2,
+#work-r3:checked ~ .works #work-w3,
+#work-r4:checked ~ .works #work-w4{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+/* ═══════════════════════════════════════════════
+   舞台标题与左右布局
+   ═══════════════════════════════════════════════ */
+.stage-head{
+  display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+  padding-bottom:16px;margin-bottom:24px;
+  border-bottom:1px solid var(--line);
+}
+.stage-head h2{
+  font-size:clamp(18px,2.2vw,24px);font-weight:600;letter-spacing:.02em;color:#fff;
+}
+.stage-tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  color:var(--dim);margin-left:auto;
+}
+
+.layout{display:flex;gap:28px;align-items:flex-start;}
+.side-col{
+  width:var(--side);flex-shrink:0;
+  position:sticky;top:92px;
+}
+.side{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:16px;overflow:hidden;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 8px 26px rgba(0,0,0,.24);
+}
+.side-item{
+  --side-accent:transparent;
+  display:flex;align-items:center;gap:12px;
+  padding:15px 18px;cursor:pointer;
+  border-left:3px solid var(--side-accent);
+  border-bottom:1px solid var(--line);
+  transition:all .22s var(--ease);background:transparent;
+}
+.side-item:last-child{border-bottom:none;}
+.side-item:hover{background:rgba(255,255,255,.04);}
+.side-idx{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted);flex-shrink:0;}
+.side-name{font-size:14px;font-weight:500;color:rgba(255,255,255,.68);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .22s;}
+.side-cnt{font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto;flex-shrink:0;}
+
+.side-item.on{
+  --side-accent:var(--accent);
+  background:var(--accent-bg);
+  box-shadow:inset 0 0 0 1px var(--accent-glow),0 0 20px rgba(232,93,4,.08);
+}
+.side-item.on .side-name{color:#fff;font-weight:600;}
+.side-item.on .side-idx{color:var(--accent-2);}
+.side-item.on .side-cnt{color:var(--accent-hi);}
+
+.stage{flex:1;min-width:0;}
+.group-panel{display:none;animation:fadeUp .34s var(--ease) both;}
+
+/* ── PPT 下载按钮 ── */
+.ppt-sq{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:88px;height:88px;margin:18px auto 0;border-radius:16px;gap:4px;
+  background:var(--panel);border:1px solid var(--line);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  color:#fff;text-decoration:none;
+  transition:all .28s var(--ease);
+  box-shadow:0 4px 16px rgba(0,0,0,.22);
+}
+.ppt-sq:hover{
+  background:var(--accent-bg);border-color:var(--accent);
+  transform:translateY(-3px);
+  box-shadow:0 10px 28px rgba(232,93,4,.22),0 12px 36px rgba(0,0,0,.3);
+}
+.ppt-sq:active{transform:translateY(0) scale(.97);}
+.ppt-sq .t{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.1em;line-height:1;}
+.ppt-sq .s{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--dim);line-height:1;}
+.ppt-sq .a{font-size:12px;color:var(--accent-2);line-height:1;transition:transform .28s;}
+.ppt-sq:hover .a{transform:translateY(2px);}
+
+/* ═══════════════════════════════════════════════
+   作品卡片与图像容器（按原图比例零裁剪展示）
+   ═══════════════════════════════════════════════ */
+.grid{
+  display:flex;flex-direction:column;gap:18px;
+  max-width:980px;margin:0 auto;
+}
+figure{
+  position:relative;width:100%;
+  display:flex;flex-direction:column;
+  overflow:hidden;border-radius:var(--radius);
+  background:var(--panel-solid);cursor:zoom-in;
+  border:1px solid var(--line);
+  transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease);
+  box-shadow:0 4px 18px rgba(0,0,0,.26);
+}
+figure:hover{
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px var(--accent-glow),0 10px 38px rgba(232,93,4,.16),0 18px 50px rgba(0,0,0,.35);
+  transform:translateY(-3px);
+}
+.art{
+  position:relative;width:100%;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.art img{
+  width:100%;height:100%;display:block;
+  object-fit:contain;
+  transition:transform .45s var(--ease),filter .45s;
+}
+figure:hover .art img{transform:scale(1.018);filter:brightness(1.03);}
+
+/* 底部微信息栏：永不遮挡图片文字 */
+.fig-cap{
+  display:flex;align-items:center;gap:12px;
+  padding:8px 14px;
+  background:rgba(12,12,26,.92);
+  border-top:1px solid var(--line);
+  font-size:12px;color:var(--dim);
+}
+.fig-idx{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  color:var(--accent-2);font-weight:600;flex-shrink:0;
+}
+.fig-title{
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  color:rgba(255,255,255,.78);
+}
+.fig-zoom{
+  margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  color:var(--muted);flex-shrink:0;transition:color .25s;
+}
+figure:hover .fig-zoom{color:var(--accent-hi);}
+
+/* 第一次作业：1400×203 横条无裁剪纸张底 */
+.work-w1 .art{
+  aspect-ratio:1400/203;
+  background:#F6F6F8;
+  padding:6px 10px;
+}
+.work-w1 figure:hover .art img{filter:contrast(1.04);}
+
+/* 第二次作业：16:9 民族字版展板 + 7 套民族边框 */
+.work-w2 .art{
+  aspect-ratio:16/9;
+  background:#141414;
+}
+.group-panel.skin-yi figure{border:9px solid #1a0f0c;box-shadow:inset 0 0 0 3px #8f1d12,0 6px 24px rgba(0,0,0,.36);}
+.group-panel.skin-bai figure{border:8px solid #2c4d72;box-shadow:inset 0 0 0 4px rgba(232,240,248,.24),0 6px 24px rgba(0,0,0,.36);}
+.group-panel.skin-miao figure{border:8px solid #6e7680;box-shadow:inset 0 0 0 2px #11151a,0 6px 24px rgba(0,0,0,.36);}
+.group-panel.skin-dai figure{border:8px solid #14514a;box-shadow:inset 0 0 0 3px rgba(201,164,86,.35),0 6px 24px rgba(0,0,0,.36);}
+.group-panel.skin-naxi figure{border:9px solid #4a3520;box-shadow:inset 0 0 0 3px #b98f4e,0 6px 24px rgba(0,0,0,.36);}
+.group-panel.skin-wa figure{border:10px solid #101010;box-shadow:inset 0 0 0 3px #7d1f16,0 6px 24px rgba(0,0,0,.36);}
+.group-panel.skin-zang figure{border:9px solid #7a1a12;box-shadow:inset 0 0 0 3px #d9a02a,0 6px 24px rgba(0,0,0,.36);}
+
+/* 第三次作业：16:9 深炭灰 PNG 展板 */
+.work-w3 .art{
+  aspect-ratio:16/9;
+  background:#222222;
+}
+
+/* ── 第二次作业：三列调研说明卡片 ── */
+.work-note{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  margin:0 0 30px;
+}
+.note-card{
+  position:relative;overflow:hidden;
+  border:1px solid var(--line);background:var(--panel);
+  border-radius:14px;padding:22px 22px 20px;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 4px 20px rgba(0,0,0,.22);
+}
+.note-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--accent-grad);opacity:.8;
+}
+.note-card h3{
+  font-size:14px;font-weight:600;letter-spacing:.06em;color:#fff;
+  margin-bottom:10px;display:flex;align-items:center;gap:8px;
+}
+.note-card h3 span{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--accent-2);
+}
+.note-card p{font-size:13px;line-height:1.85;color:rgba(255,255,255,.68);}
+
+/* ── 第四次作业：预留占位卡片 ── */
+.stub{
+  min-height:420px;border:1px dashed var(--line-hi);
+  background:var(--panel);border-radius:18px;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;text-align:center;padding:48px 28px;
+  box-shadow:0 8px 30px rgba(0,0,0,.24);
+}
+.stub-badge{
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent-hi);background:var(--accent-bg);
+  border:1px solid var(--accent-glow);padding:4px 12px;border-radius:999px;
+}
+.stub-mascot{
+  width:142px;height:130px;border-radius:16px;overflow:hidden;
+  border:1px solid var(--line-hi);background:#181822;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);margin:6px 0;
+}
+.stub-mascot img{width:100%;height:100%;object-fit:cover;display:block;}
+.stub h3{font-size:22px;font-weight:600;color:#fff;letter-spacing:.04em;}
+.stub p{font-size:14px;color:var(--dim);max-width:440px;line-height:1.8;}
+
+/* ═══════════════════════════════════════════════
+   页脚 & 回到顶部按钮
+   ═══════════════════════════════════════════════ */
+footer{
+  margin-top:88px;padding:28px 0;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-size:11px;letter-spacing:.12em;color:var(--muted);font-family:var(--mono);
+}
+.to-top{
+  position:fixed;right:24px;bottom:24px;z-index:40;
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid var(--line-hi);background:rgba(18,18,36,.88);
+  color:#fff;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 8px 26px rgba(0,0,0,.38);
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:all .25s var(--ease);
+}
+.to-top.show{opacity:1;transform:none;pointer-events:auto;}
+.to-top:hover{border-color:var(--accent);background:var(--accent-bg);color:var(--accent-hi);}
+
+/* ═══════════════════════════════════════════════
+   纯 CSS 分组切换（w1 / w2 / w3）
+   ═══════════════════════════════════════════════ */
+#w1-g0:checked ~ .layout .side label[for="w1-g0"],
+#w1-g1:checked ~ .layout .side label[for="w1-g1"],
+#w1-g2:checked ~ .layout .side label[for="w1-g2"],
+#w2-g0:checked ~ .layout .side label[for="w2-g0"],
+#w2-g1:checked ~ .layout .side label[for="w2-g1"],
+#w2-g2:checked ~ .layout .side label[for="w2-g2"],
+#w2-g3:checked ~ .layout .side label[for="w2-g3"],
+#w2-g4:checked ~ .layout .side label[for="w2-g4"],
+#w2-g5:checked ~ .layout .side label[for="w2-g5"],
+#w2-g6:checked ~ .layout .side label[for="w2-g6"],
+#w3-g0:checked ~ .layout .side label[for="w3-g0"],
+#w3-g1:checked ~ .layout .side label[for="w3-g1"],
+#w3-g2:checked ~ .layout .side label[for="w3-g2"]{
+  --side-accent:var(--accent);
+  background:var(--accent-bg);
+  box-shadow:inset 0 0 0 1px var(--accent-glow),0 0 20px rgba(232,93,4,.08);
+}
+#w1-g0:checked ~ .layout .side label[for="w1-g0"] .side-idx,
+#w1-g1:checked ~ .layout .side label[for="w1-g1"] .side-idx,
+#w1-g2:checked ~ .layout .side label[for="w1-g2"] .side-idx,
+#w2-g0:checked ~ .layout .side label[for="w2-g0"] .side-idx,
+#w2-g1:checked ~ .layout .side label[for="w2-g1"] .side-idx,
+#w2-g2:checked ~ .layout .side label[for="w2-g2"] .side-idx,
+#w2-g3:checked ~ .layout .side label[for="w2-g3"] .side-idx,
+#w2-g4:checked ~ .layout .side label[for="w2-g4"] .side-idx,
+#w2-g5:checked ~ .layout .side label[for="w2-g5"] .side-idx,
+#w2-g6:checked ~ .layout .side label[for="w2-g6"] .side-idx,
+#w3-g0:checked ~ .layout .side label[for="w3-g0"] .side-idx,
+#w3-g1:checked ~ .layout .side label[for="w3-g1"] .side-idx,
+#w3-g2:checked ~ .layout .side label[for="w3-g2"] .side-idx{color:var(--accent-2);}
+
+#w1-g0:checked ~ .layout .side label[for="w1-g0"] .side-cnt,
+#w1-g1:checked ~ .layout .side label[for="w1-g1"] .side-cnt,
+#w1-g2:checked ~ .layout .side label[for="w1-g2"] .side-cnt,
+#w2-g0:checked ~ .layout .side label[for="w2-g0"] .side-cnt,
+#w2-g1:checked ~ .layout .side label[for="w2-g1"] .side-cnt,
+#w2-g2:checked ~ .layout .side label[for="w2-g2"] .side-cnt,
+#w2-g3:checked ~ .layout .side label[for="w2-g3"] .side-cnt,
+#w2-g4:checked ~ .layout .side label[for="w2-g4"] .side-cnt,
+#w2-g5:checked ~ .layout .side label[for="w2-g5"] .side-cnt,
+#w2-g6:checked ~ .layout .side label[for="w2-g6"] .side-cnt,
+#w3-g0:checked ~ .layout .side label[for="w3-g0"] .side-cnt,
+#w3-g1:checked ~ .layout .side label[for="w3-g1"] .side-cnt,
+#w3-g2:checked ~ .layout .side label[for="w3-g2"] .side-cnt{color:var(--accent-hi);}
+
+#w1-g0:checked ~ .layout .side label[for="w1-g0"] .side-name,
+#w1-g1:checked ~ .layout .side label[for="w1-g1"] .side-name,
+#w1-g2:checked ~ .layout .side label[for="w1-g2"] .side-name,
+#w2-g0:checked ~ .layout .side label[for="w2-g0"] .side-name,
+#w2-g1:checked ~ .layout .side label[for="w2-g1"] .side-name,
+#w2-g2:checked ~ .layout .side label[for="w2-g2"] .side-name,
+#w2-g3:checked ~ .layout .side label[for="w2-g3"] .side-name,
+#w2-g4:checked ~ .layout .side label[for="w2-g4"] .side-name,
+#w2-g5:checked ~ .layout .side label[for="w2-g5"] .side-name,
+#w2-g6:checked ~ .layout .side label[for="w2-g6"] .side-name,
+#w3-g0:checked ~ .layout .side label[for="w3-g0"] .side-name,
+#w3-g1:checked ~ .layout .side label[for="w3-g1"] .side-name,
+#w3-g2:checked ~ .layout .side label[for="w3-g2"] .side-name{color:#fff;font-weight:600;}
+
+#w1-g0:checked ~ .layout .stage #w1-p0,
+#w1-g1:checked ~ .layout .stage #w1-p1,
+#w1-g2:checked ~ .layout .stage #w1-p2,
+#w2-g0:checked ~ .layout .stage #w2-p0,
+#w2-g1:checked ~ .layout .stage #w2-p1,
+#w2-g2:checked ~ .layout .stage #w2-p2,
+#w2-g3:checked ~ .layout .stage #w2-p3,
+#w2-g4:checked ~ .layout .stage #w2-p4,
+#w2-g5:checked ~ .layout .stage #w2-p5,
+#w2-g6:checked ~ .layout .stage #w2-p6,
+#w3-g0:checked ~ .layout .stage #w3-p0,
+#w3-g1:checked ~ .layout .stage #w3-p1,
+#w3-g2:checked ~ .layout .stage #w3-p2{display:block;}
+
+/* ═══════════════════════════════════════════════
+   画廊灯箱（支持左右切换、键盘、手势、放大细节）
+   ═══════════════════════════════════════════════ */
+.lb-mask{
+  position:fixed;inset:0;
+  background:rgba(4,4,12,.94);z-index:99999;
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:56px 64px 72px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  animation:lbIn .22s ease both;
+}
+@keyframes lbIn{from{opacity:0;}to{opacity:1;}}
+.lb-mask.on{display:flex;}
+.lb-stage{
+  position:relative;max-width:100%;max-height:100%;
+  display:flex;align-items:center;justify-content:center;
+  overflow:auto;
+}
+.lb-stage img{
+  max-width:88vw;max-height:78vh;width:auto;height:auto;
+  object-fit:contain;display:block;cursor:zoom-in;
+  border-radius:10px;
+  box-shadow:0 24px 80px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.08);
+  transition:transform .25s var(--ease);
+}
+.lb-mask.zoomed .lb-stage{max-width:96vw;max-height:82vh;}
+.lb-mask.zoomed .lb-stage img{
+  max-width:none;max-height:none;width:auto;height:auto;cursor:zoom-out;
+}
+.lb-btn{
+  position:fixed;width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:20px;cursor:pointer;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  transition:all .2s;user-select:none;
+}
+.lb-btn:hover{background:var(--accent-bg);border-color:var(--accent);color:var(--accent-hi);}
+.lb-close{top:18px;right:22px;font-size:24px;}
+.lb-zoom{top:18px;right:76px;font-size:15px;}
+.lb-prev{left:18px;top:50%;transform:translateY(-50%);}
+.lb-next{right:18px;top:50%;transform:translateY(-50%);}
+.lb-btn[hidden]{display:none;}
+.lb-bar{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:14px;max-width:90vw;
+  padding:8px 16px;border-radius:999px;
+  background:rgba(16,16,32,.88);border:1px solid var(--line-hi);
+  font-size:12px;color:var(--text);white-space:nowrap;
+}
+.lb-cnt{font-family:var(--mono);font-size:11px;color:var(--accent-hi);}
+.lb-txt{overflow:hidden;text-overflow:ellipsis;color:var(--dim);}
+
+/* ═══════════════════════════════════════════════
+   响应式适配
+   ═══════════════════════════════════════════════ */
+@media(max-width:1100px){
+  .work-note{grid-template-columns:1fr;gap:12px;}
+}
+@media(max-width:960px){
+  :root{--side:190px;}
+  .wrap{padding:0 22px 84px;}
+  header{padding:52px 0 36px;}
+}
+@media(max-width:900px){
+  .layout{flex-direction:column;gap:0;}
+  .side-col{
+    position:static;width:100%;
+    display:flex;align-items:stretch;gap:10px;
+    margin-bottom:20px;
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
-  body{background:#1A1A2E;color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-  body::before{content:"";position:fixed;inset:0;
-    background-image:url("img/6ded683a64.jpg");
-    background-size:auto 122%;background-position:left center;background-attachment:fixed;
-    z-index:0;pointer-events:none;}
-  .w-radio,.g-radio{position:absolute;opacity:0;pointer-events:none;}
-  .wrap{position:relative;z-index:1;max-width:1800px;margin:0 auto;padding:0 24px 80px;}
-
-  header{padding:72px 0 46px;}
-  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
-  .eyebrow::before{content:"";width:28px;height:1px;background:var(--accent);}
-  h1{font-size:clamp(26px,4.2vw,52px);line-height:1.15;font-weight:600;margin-bottom:14px;}
-  h1 em{font-style:normal;color:var(--accent);}
-  .meta{display:flex;flex-wrap:wrap;gap:32px;margin-top:30px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;letter-spacing:.1em;color:var(--dim);}
-  .meta dt{font-family:var(--mono);margin-bottom:4px;opacity:.6;font-size:10px;}
-  .meta dd{color:var(--text);font-size:14px;}
-
-  .work-tabs{
-    display:flex;flex-wrap:wrap;gap:9px;
-    padding:22px 0;margin-bottom:34px;
-    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-    position:sticky;top:0;background:rgba(255,255,255,.96);
-    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:20;
-  }
-  .work-tabs label{
-    font-family:var(--mono);font-size:11px;letter-spacing:.08em;
-    padding:9px 17px;border:1px solid var(--line-hi);color:var(--dim);
-    cursor:pointer;transition:all .2s;user-select:none;white-space:nowrap;
-  }
-  .work-tabs label:hover{color:var(--text);border-color:#555;}
-
-  .works{}
-  .work{display:none;}
-
-  .stage-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid var(--line);}
-  .stage-head h2{font-size:clamp(17px,2vw,22px);font-weight:600;letter-spacing:.03em;}
-  .stage-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--dim);margin-left:auto;}
-
-  .layout{display:flex;gap:22px;align-items:flex-start;}
-
   .side{
-    width:var(--side);flex-shrink:0;
-    border:1px solid var(--line);background:var(--panel);
-    position:sticky;top:76px;
+    flex:1;min-width:0;
+    display:flex;flex-direction:row;gap:0;
+    border-radius:14px;overflow-x:auto;overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
   }
+  .side::-webkit-scrollbar{display:none;}
   .side-item{
-    display:flex;align-items:center;gap:10px;
-    padding:15px 16px;cursor:pointer;
-    border-left:2px solid transparent;
-    border-bottom:1px solid var(--line);
-    transition:all .2s;
+    flex:1 0 auto;min-width:86px;flex-direction:column;align-items:center;justify-content:center;
+    gap:3px;padding:11px 14px;
+    border-left:none;border-bottom:2px solid var(--side-accent);
+    text-align:center;
   }
-  .side-item:last-child{border-bottom:none;}
-  .side-item:hover{background:#F7F7F7;}
-  .side-idx{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#B0B0B0;flex-shrink:0;}
-  .side-name{font-size:14px;font-weight:600;color:#8A8A8A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .side-cnt{font-family:var(--mono);font-size:9px;color:#777777;margin-left:auto;flex-shrink:0;}
-
-  .stage{flex:1;min-width:0;}
-  .group-panel{display:none;}
-
-  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:100%;margin:0;}
-
-  figure{
-    position:relative;aspect-ratio:16/9;
-    border:1px solid var(--line);background:var(--panel);
-    overflow:hidden;transition:border-color .28s,box-shadow .28s,transform .28s;
-  }
-  figure::before{content:attr(data-idx);position:absolute;top:7px;left:9px;
-    font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--dim);
-    z-index:4;transition:color .28s;pointer-events:none;}
-  figure::after{content:"+";position:absolute;bottom:5px;right:9px;
-    font-family:var(--mono);font-size:11px;color:var(--faint);
-    z-index:4;transition:color .28s;pointer-events:none;}
-  .ph{position:absolute;inset:0;background-image:var(--ph);background-repeat:no-repeat;background-position:center 38%;background-size:34%;opacity:.72;mix-blend-mode:multiply;
-    display:flex;align-items:flex-end;justify-content:flex-start;
-    padding-bottom:3px;font-family:var(--mono);font-size:9px;
-    letter-spacing:.12em;color:#AAAAAA;z-index:1;}
-  .art{position:absolute;inset:9px;background-repeat:no-repeat;background-position:center;
-    background-size:contain;z-index:2;
-    mix-blend-mode:multiply;
-    transition:transform .32s cubic-bezier(.22,1,.36,1);}
-  figure:hover{border-color:var(--accent);box-shadow:0 0 0 1px rgba(232,93,4,.26),0 0 22px rgba(232,93,4,.12);transform:translateY(-3px);}
-  figure:hover .art{transform:scale(1.03);}
-  figure:hover::before,figure:hover::after{color:var(--accent);}
-
-  .stub{min-height:420px;border:1px dashed #E5E5E5;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;gap:16px;text-align:center;padding:40px 24px;}
-  .stub .icon{display:block;width:150px;height:140px;margin:0 auto;background:var(--ph) center/contain no-repeat;font-size:0;color:transparent;opacity:.75;}
-  .stub h3{font-size:22px;font-weight:700;color:#1A1A1A;letter-spacing:.04em;}
-  .stub p{font-size:15px;color:#333333;letter-spacing:.08em;font-weight:600;}
-
-  footer{margin-top:80px;padding-top:26px;border-top:1px solid var(--line);
-    display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;
-    font-size:11px;letter-spacing:.1em;color:#888888;font-family:var(--mono);}
-
-#work-r1:checked ~ .work-tabs label[for="work-r1"]{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600;}
-  #work-r1:checked ~ .works #work-w1{display:block;}
-  #work-r2:checked ~ .work-tabs label[for="work-r2"]{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600;}
-  #work-r2:checked ~ .works #work-w2{display:block;}
-  #work-r3:checked ~ .work-tabs label[for="work-r3"]{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600;}
-  #work-r3:checked ~ .works #work-w3{display:block;}
-  #work-r4:checked ~ .work-tabs label[for="work-r4"]{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600;}
-  #work-r4:checked ~ .works #work-w4{display:block;}
-
-  ##w1-g0:checked ~ .layout .side label[for="w1-g0"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
-  ##w1-g0:checked ~ .layout .side label[for="w1-g0"] .side-idx,
-  ##w1-g0:checked ~ .layout .side label[for="w1-g0"] .side-cnt{color:#FFB066 !important;}
-  ##w1-g0:checked ~ .layout .side label[for="w1-g0"] .side-name{color:#FFFFFF !important;}
-  #w1-g0:checked ~ .layout .stage #w1-p0{display:block;}
-  ##w1-g1:checked ~ .layout .side label[for="w1-g1"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
-  ##w1-g1:checked ~ .layout .side label[for="w1-g1"] .side-idx,
-  ##w1-g1:checked ~ .layout .side label[for="w1-g1"] .side-cnt{color:#FFB066 !important;}
-  ##w1-g1:checked ~ .layout .side label[for="w1-g1"] .side-name{color:#FFFFFF !important;}
-  #w1-g1:checked ~ .layout .stage #w1-p1{display:block;}
-  ##w1-g2:checked ~ .layout .side label[for="w1-g2"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
-  ##w1-g2:checked ~ .layout .side label[for="w1-g2"] .side-idx,
-  ##w1-g2:checked ~ .layout .side label[for="w1-g2"] .side-cnt{color:#FFB066 !important;}
-  ##w1-g2:checked ~ .layout .side label[for="w1-g2"] .side-name{color:#FFFFFF !important;}
-  #w1-g2:checked ~ .layout .stage #w1-p2{display:block;}
-  ##w2-g0:checked ~ .layout .side label[for="w2-g0"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
-  ##w2-g0:checked ~ .layout .side label[for="w2-g0"] .side-idx,
-  ##w2-g0:checked ~ .layout .side label[for="w2-g0"] .side-cnt{color:#FFB066 !important;}
-  ##w2-g0:checked ~ .layout .side label[for="w2-g0"] .side-name{color:#FFFFFF !important;}
-  #w2-g0:checked ~ .layout .stage #w2-p0{display:block;}
-  ##w2-g1:checked ~ .layout .side label[for="w2-g1"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
-  ##w2-g1:checked ~ .layout .side label[for="w2-g1"] .side-idx,
-  ##w2-g1:checked ~ .layout .side label[for="w2-g1"] .side-cnt{color:#FFB066 !important;}
-  ##w2-g1:checked ~ .layout .side label[for="w2-g1"] .side-name{color:#FFFFFF !important;}
-  #w2-g1:checked ~ .layout .stage #w2-p1{display:block;}
-  ##w2-g2:checked ~ .layout .side label[for="w2-g2"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
-  ##w2-g2:checked ~ .layout .side label[for="w2-g2"] .side-idx,
-  ##w2-g2:checked ~ .layout .side label[for="w2-g2"] .side-cnt{color:#FFB066 !important;}
-  ##w2-g2:checked ~ .layout .side label[for="w2-g2"] .side-name{color:#FFFFFF !important;}
-  #w2-g2:checked ~ .layout .stage #w2-p2{display:block;}
-  ##w2-g3:checked ~ .layout .side label[for="w2-g3"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
-  ##w2-g3:checked ~ .layout .side label[for="w2-g3"] .side-idx,
-  ##w2-g3:checked ~ .layout .side label[for="w2-g3"] .side-cnt{color:#FFB066 !important;}
-  ##w2-g3:checked ~ .layout .side label[for="w2-g3"] .side-name{color:#FFFFFF !important;}
-  #w2-g3:checked ~ .layout .stage #w2-p3{display:block;}
-  ##w2-g4:checked ~ .layout .side label[for="w2-g4"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
-  ##w2-g4:checked ~ .layout .side label[for="w2-g4"] .side-idx,
-  ##w2-g4:checked ~ .layout .side label[for="w2-g4"] .side-cnt{color:#FFB066 !important;}
-  ##w2-g4:checked ~ .layout .side label[for="w2-g4"] .side-name{color:#FFFFFF !important;}
-  #w2-g4:checked ~ .layout .stage #w2-p4{display:block;}
-  ##w2-g5:checked ~ .layout .side label[for="w2-g5"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
-  ##w2-g5:checked ~ .layout .side label[for="w2-g5"] .side-idx,
-  ##w2-g5:checked ~ .layout .side label[for="w2-g5"] .side-cnt{color:#FFB066 !important;}
-  ##w2-g5:checked ~ .layout .side label[for="w2-g5"] .side-name{color:#FFFFFF !important;}
-  #w2-g5:checked ~ .layout .stage #w2-p5{display:block;}
-  ##w2-g6:checked ~ .layout .side label[for="w2-g6"]{background:rgba(232,93,4,.28) !important;border-left:3px solid #E85D04 !important;box-shadow:inset 0 0 0 1px rgba(232,93,4,.4) !important;}
-  ##w2-g6:checked ~ .layout .side label[for="w2-g6"] .side-idx,
-  ##w2-g6:checked ~ .layout .side label[for="w2-g6"] .side-cnt{color:#FFB066 !important;}
-  ##w2-g6:checked ~ .layout .side label[for="w2-g6"] .side-name{color:#FFFFFF !important;}
-  #w2-g6:checked ~ .layout .stage #w2-p6{display:block;}
-
-  @media(max-width:1200px){ .grid{grid-template-columns:repeat(4,1fr);} }
-  @media(max-width:960px){
-    :root{--side:170px;}
-    .wrap{padding:0 20px 80px;}
-    .grid{grid-template-columns:repeat(3,1fr);}
-    header{padding:52px 0 36px;}
-  }
-  @media(max-width:700px){
-    :root{--side:100px;}
-    .side{width:var(--side);}
-    .side-item{padding:11px 6px;gap:5px;flex-direction:column;align-items:flex-start;}
-    .side-idx{font-size:9px;}
-    .side-name{font-size:11px;font-weight:600;line-height:1.3;white-space:normal;}
-    .side-cnt{display:none;}
-    .grid{grid-template-columns:repeat(2,1fr);max-width:100%;gap:12px;}
-    .wrap{padding:0 12px 60px;}
-    h1{font-size:24px;}
-    .work-tabs label{font-size:10px;padding:8px 10px;letter-spacing:.03em;}
-    .stage-tag{display:none;}
-  }
-
-  /* ── 第二次作业：宽幅 + 民族厚边框 ── */
-  .work-note{border:1px solid var(--line);background:rgba(250,250,250,.94);padding:24px 28px;
-    margin:0 0 28px;max-width:1180px;border-radius:12px;}
-  .work-note h3{font-size:15px;font-weight:700;letter-spacing:.08em;color:#111;margin:16px 0 6px;}
-  .work-note h3:first-child{margin-top:0;}
-  .work-note p{font-size:13.5px;line-height:2;color:#3A3A3A;}
-
-  .grid.wide{grid-template-columns:1fr;gap:22px;}
-  /* 覆盖旧的 7:1 兼容兜底（body .grid figure{padding-top:14.29%!important}） */
-  body .grid.wide{grid-template-columns:1fr !important;gap:22px !important;}
-  body .grid.wide figure{height:auto !important;padding-top:0 !important;
-    aspect-ratio:16/9 !important;border-radius:12px !important;}
-  body .grid.wide figure .art{inset:0 !important;background-size:cover !important;border-radius:0 !important;mix-blend-mode:normal !important;}
-
-  .group-panel.skin-yi figure{border:10px solid #1a0f0c;
-    box-shadow:inset 0 0 0 3px #8f1d12,inset 0 0 0 7px #1a0f0c,0 0 0 1px rgba(176,120,40,.35);}
-  .group-panel.skin-bai figure{border:9px solid #2c4d72;
-    box-shadow:inset 0 0 0 5px rgba(232,240,248,.28),0 0 0 1px #2c4d72;}
-  .group-panel.skin-miao figure{border:8px solid #6e7680;
-    box-shadow:inset 0 0 0 2px #11151a,inset 0 0 0 5px #aab4bf,0 0 0 2px rgba(210,220,232,.22);}
-  .group-panel.skin-dai figure{border:9px solid #14514a;
-    box-shadow:inset 0 0 0 3px #0d2f2b,inset 0 0 0 6px rgba(201,164,86,.35);}
-  .group-panel.skin-naxi figure{border:10px solid #4a3520;
-    box-shadow:inset 0 0 0 3px #b98f4e;}
-  .group-panel.skin-wa figure{border:12px solid #101010;
-    box-shadow:inset 0 0 0 4px #7d1f16,inset 0 0 0 8px #101010;}
-  .group-panel.skin-zang figure{border:11px solid #7a1a12;
-    box-shadow:inset 0 0 0 4px #d9a02a,inset 0 0 0 7px #7a1a12;}
-
-  /* ── 圆角 ── */
-  figure{border-radius:10px;overflow:hidden;}
-  figure .art{border-radius:10px;}
-  .slot{border-radius:10px;}
-  .side{border-radius:12px;overflow:hidden;}
-  .side-item{border-radius:10px;}
-  .wtab{border-radius:8px;}
-  .work-tabs label{border-radius:8px;}
-  .stub,.stub-edit{border-radius:14px;}
-  .btn{border-radius:8px;}
-  .field input{border-radius:8px;}
-
-  /* ── 层叠修正：内容必须在背景之上 ── */
-  .work-tabs,.works,.works .work,.bar{position:relative;z-index:2;}
-  .wrap,header,.panel,.layout,.stage{position:relative;z-index:1;}
-
-  /* ── 压在光谱/深色背景上的文字改白 ── */
-  .work-title input{color:#FFFFFF !important;text-shadow:0 1px 5px rgba(0,0,0,.55);}
-  .work-title input::placeholder{color:rgba(255,255,255,.45) !important;}
-  .stage-head h2{color:#FFFFFF !important;text-shadow:0 1px 5px rgba(0,0,0,.55);}
-  .stage-head input[type=text]{color:#FFFFFF !important;text-shadow:0 1px 5px rgba(0,0,0,.55);background:transparent !important;}
-  .stage-head input[type=text]::placeholder{color:rgba(255,255,255,.45) !important;}
-  .stage-head input[type=text]:last-of-type{color:rgba(255,255,255,.62) !important;font-size:11px;}
-
-
-  .stage-tag{color:rgba(255,255,255,.68) !important;}
-  .group-tag{color:rgba(255,255,255,.68) !important;}
-  h1{color:#FFFFFF !important;text-shadow:0 2px 8px rgba(0,0,0,.5);}
-  header .eyebrow{color:#FF8C42 !important;}
-  .meta dt{color:rgba(255,255,255,.5) !important;}
-  .meta dd{color:#FFFFFF !important;}
-  .note{color:rgba(255,255,255,.55) !important;}
-  .note b{color:#FFFFFF !important;}
-  .note kbd{background:rgba(255,255,255,.12) !important;border-color:rgba(255,255,255,.2) !important;color:#EDEDED !important;}
-
-  /* ── 右下角提示 ── */
-  .toast{
-    position:fixed; right:24px; bottom:24px; z-index:9999;
-    max-width:340px; padding:14px 18px;
-    background:#1A1A2E; color:#fff; border-radius:12px;
-    font-size:13px; line-height:1.65; letter-spacing:.02em;
-    box-shadow:0 8px 32px rgba(0,0,0,.45);
-    opacity:0; transform:translateY(12px); pointer-events:none;
-    transition:opacity .22s ease, transform .22s ease;
-  }
-  .toast.show{opacity:1; transform:translateY(0);}
-  .toast b{color:#FFB066;}
-
-  /* ── Tab 栏：玻璃条（和深色背景同步） ── */
-  .work-tabs{
-    background:rgba(22,22,40,.72) !important;
-    border:1px solid rgba(255,255,255,.13) !important;
-    border-radius:14px !important;
-    padding:13px 16px !important;
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    margin-bottom:26px !important;
-  }
-  .work-tabs label{
-    background:transparent !important;
-    border-color:rgba(255,255,255,.22) !important;
-    color:rgba(255,255,255,.60) !important;
-    border-radius:9px !important;
-  }
-  .work-tabs label:hover{
-    color:#FFFFFF !important;
-    border-color:rgba(255,255,255,.5) !important;
-    background:rgba(22,22,40,.72) !important;
-  }
-  #work-r1:checked ~ .work-tabs label[for="work-r1"],
-  #work-r2:checked ~ .work-tabs label[for="work-r2"],
-  #work-r3:checked ~ .work-tabs label[for="work-r3"],
-  #work-r4:checked ~ .work-tabs label[for="work-r4"]{
-    background:rgba(10,10,22,.92) !important;
-    border-color:rgba(255,255,255,.22) !important;
-    color:#FFFFFF !important;
-    font-weight:700 !important;
-    box-shadow:0 2px 10px rgba(0,0,0,.35);
-  }
-
-  
-  /* ── 所有框统一玻璃条 ── */
-  .bar{
-    background:rgba(22,22,40,.80) !important;
-    border-bottom:1px solid rgba(255,255,255,.12) !important;
-    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  }
-  .bar .brand,.bar label,.bar .hint{color:rgba(255,255,255,.55) !important;}
-  .bar input[type=text]{background:rgba(255,255,255,.07) !important;border:1px solid rgba(255,255,255,.16) !important;color:#fff !important;}
-  .bar input[type=text]::placeholder{color:rgba(255,255,255,.35) !important;}
-
-  .side{
-    background:rgba(22,22,40,.80) !important;
-    border:1px solid rgba(255,255,255,.12) !important;
-    border-radius:14px !important;
-    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    overflow:hidden;
-  }
-  .side-item{border-left:2px solid transparent !important;background:transparent !important;}
-  .side-item:hover{background:rgba(22,22,40,.72) !important;}
-  .side-name{color:rgba(255,255,255,.72) !important;}
-  .side-idx{color:rgba(255,255,255,.35) !important;}
-  .side-cnt{color:rgba(255,255,255,.4) !important;}
-  .side-item.on,.side-item[data-active="1"]{background:rgba(10,10,22,.92) !important;border-left-color:#E85D04 !important;box-shadow:0 2px 10px rgba(0,0,0,.3);}
-  .side-item.on .side-name{color:#FFFFFF !important;font-weight:700 !important;}
-
-  .stage-head{border-bottom:1px solid rgba(255,255,255,.12) !important;}
-
-  /* ── 编辑器 tab（.wtab）统一成 玻璃 + 选中实心 ── */
-  .wtab{
-    background:transparent !important;
-    border:1px solid rgba(255,255,255,.22) !important;
-    color:rgba(255,255,255,.60) !important;
-    border-radius:9px !important;
-    transition:all .18s;
-  }
-  .wtab:hover{
-    color:#FFFFFF !important;
-    border-color:rgba(255,255,255,.5) !important;
-    background:rgba(255,255,255,.07) !important;
-  }
-  .wtab.on{
-    background:rgba(10,10,22,.92) !important;
-    border-color:rgba(255,255,255,.24) !important;
-    color:#FFFFFF !important;
-    font-weight:700 !important;
-    box-shadow:0 2px 10px rgba(0,0,0,.38);
-  }
-
-  /* ── 图片铺满格子（展览长条样式） ── */
-  .art{
-    inset:0 !important;
-    background-size:cover !important;
-    background-position:center !important;
-    border-radius:10px !important;
-  }
-  figure .art{border-radius:10px !important;}
-  .slot img{
-    object-fit:cover !important;
-    padding:0 !important;
-    border-radius:10px !important;
-  }
-  .slot{padding:0 !important;overflow:hidden;}
-  figure{padding:0 !important;overflow:hidden;}
-
-  /* ── 展览样式：1 列满宽大图，从上往下排（ARC 官网那种） ── */
-  .grid{
-    display:flex !important;
-    flex-direction:column !important;
-    gap:18px !important;
-    max-width:100% !important;
-    margin:0 !important;
-  }
-  .grid figure{
-    width:100% !important;
-    aspect-ratio:16/9 !important;
-    border-radius:14px !important;
-  }
-  .grid .art{
-    inset:0 !important;
-    background-size:cover !important;
-    background-position:center !important;
-    border-radius:14px !important;
-  }
-  .grid figure .id,
-  .grid figure .cap{
-    z-index:3;
-  }
-  .grid figure .id{
-    font-size:12px !important;
-    padding:8px 10px !important;
-    text-shadow:0 1px 4px rgba(0,0,0,.8);
-  }
-  .grid figure .cap{
-    font-size:12px !important;
-    padding:10px 12px !important;
-    color:#fff !important;
-    text-shadow:0 1px 6px rgba(0,0,0,.85);
-  }
-
-  /* ── 选中态加强：橙色显眼 ── */
-  .side-item.on,
-  .side-item[data-active="1"]{
-    background:rgba(232,93,4,.26) !important;
-    border-left:3px solid #E85D04 !important;
-    box-shadow:inset 0 0 0 1px rgba(232,93,4,.35) !important;
-  }
-  .side-item.on .side-name,
-  .side-item.on .side-idx,
-  .side-item.on .side-cnt{
-    color:#FFFFFF !important;
-  }
-  .side-item.on .side-cnt{color:#FFB066 !important;}
-
-  /* ── 展览大图小一点（限制宽度居中） ── */
-  .grid{
-    max-width:880px !important;
-    margin:0 auto !important;
-  }
-  .grid figure{
-    aspect-ratio:16/9 !important;
-  }
-
-  /* ── 横条展览：满宽 + 21:9（比 16:9 更扁） ── */
-  .grid{
-    max-width:100% !important;
-    margin:0 !important;
-  }
-  .grid figure{
-    aspect-ratio:21/9 !important;
-    border-radius:12px !important;
-  }
-  .grid .art{
-    background-size:cover !important;
-    background-position:center !important;
-    border-radius:12px !important;
-  }
-
-  /* ── 最终覆盖：卡片宽度（高特异性压过前面所有重复规则） ── */
-  body .grid{max-width:880px !important;margin:0 auto !important;}
-  body .grid figure{width:100% !important;aspect-ratio:21/9 !important;}
-  body .grid .art{inset:0 !important;background-size:cover !important;background-position:center !important;}
-
-  /* ── 最终高度：把 21:9 的高度再切到 1/3（约 7:1） ── */
-  body .grid figure{
-    width:100% !important;
-    aspect-ratio:7/1 !important;
-    border-radius:10px !important;
-  }
-  body .grid .art{
-    inset:0 !important;
-    background-size:cover !important;
-    background-position:center !important;
-    border-radius:10px !important;
-  }
-
-  /* ── 占位符在扁条里按高度适配（不再撑破） ── */
-  .ph{
-    background-size:auto 78% !important;
-    background-position:center !important;
-    opacity:.5 !important;
-    mix-blend-mode:normal !important;
-  }
-  /* 占位时卡片底色改深（避免大白块） */
-  .grid figure{
-    background:#22223A !important;
-  }
-
-  /* ── 卡片底恢复白（图片 multiply 需要白底才不失真） ── */
-  .grid figure{background:#FFFFFF !important;}
-  /* 占位符：不混合、按高度适配、居中 */
-  .ph{
-    background-size:auto 76% !important;
-    background-position:center !important;
-    opacity:.55 !important;
-    mix-blend-mode:multiply !important;
-  }
-
-  /* ── 宽度满屏，高度仍按 7:1（自动变约 170px） ── */
-  body .grid{
-    max-width:100% !important;
-    margin:0 !important;
-  }
-  body .grid figure{
-    width:100% !important;
-    aspect-ratio:7/1 !important;
-    border-radius:10px !important;
-  }
-  body .grid .art{
-    inset:0 !important;
-    background-size:cover !important;
-    background-position:center !important;
-    border-radius:10px !important;
-  }
-
-  /* ── 背景图左移，补掉左侧深色边 ── */
-  body::before{
-    background-position:-16px center !important;
-  }
-
-  /* ── 手机端修复：sticky+blur 会导致导航残影重复 ── */
-  @media (max-width: 900px){
-    .side{
-      position:static !important;
-      backdrop-filter:none !important;
-      -webkit-backdrop-filter:none !important;
-      width:100% !important;
-      display:flex !important;
-      flex-direction:row !important;
-      gap:0 !important;
-      margin-bottom:16px !important;
-      border-radius:12px !important;
-      overflow:hidden !important;
-    }
-    .side-item{
-      flex:1 1 0 !important;
-      flex-direction:column !important;
-      align-items:center !important;
-      justify-content:center !important;
-      gap:2px !important;
-      padding:10px 4px !important;
-      border-left:none !important;
-      border-bottom:1px solid rgba(255,255,255,.1) !important;
-      text-align:center !important;
-    }
-    .side-item:last-child{border-bottom:none !important;}
-    .side-idx{font-size:9px !important;}
-    .side-name{font-size:11px !important;line-height:1.25 !important;}
-    .side-cnt{font-size:9px !important;}
-
-    .layout{
-      flex-direction:column !important;
-      gap:0 !important;
-    }
-    .stage{
-      width:100% !important;
-      max-width:100% !important;
-      padding:0 !important;
-    }
-    body .grid{
-      max-width:100% !important;
-    }
-    body .grid figure{
-      aspect-ratio:21/9 !important;
-      border-radius:8px !important;
-    }
-    .wrap{padding:0 10px 60px !important;}
-    .work-tabs{padding:10px 10px !important;gap:6px !important;}
-    .work-tabs label{font-size:10px !important;padding:7px 10px !important;}
-  }
-
-  /* ══ 兼容兜底：不用 aspect-ratio，改用 padding-top 撑高 ══
-     老手机浏览器（Chrome<88 / iOS<15）不支持 aspect-ratio，
-     卡片会塌成 0 高度 → 图片错乱。padding-top 法全兼容。 */
-  body .grid figure{
-    position:relative !important;
-    display:block !important;
-    width:100% !important;
-    height:0 !important;
-    padding-top:14.29% !important;   /* 7:1 → 100/7 = 14.29% */
-    aspect-ratio:auto !important;
-    overflow:hidden !important;
-    border-radius:10px !important;
-    background:#FFFFFF !important;
-  }
-  body .grid figure > *{
-    position:absolute !important;
-    inset:0 !important;
-  }
-  body .grid .art{
-    inset:0 !important;
-    background-size:cover !important;
-    background-position:center !important;
-    border-radius:10px !important;
-  }
-  /* 数字和说明要能点、能显示 */
-  body .grid figure .id,
-  body .grid figure .cap{
-    position:absolute !important;
-    z-index:5 !important;
-    inset:auto !important;
-  }
-  body .grid figure .id{top:6px !important;left:8px !important;}
-  body .grid figure .cap{bottom:6px !important;left:8px !important;right:8px !important;}
-
-  @media (max-width: 900px){
-    body .grid figure{
-      padding-top:14.29% !important;
-    }
-  }
-
-  /* ══ 兼容兜底：inset 简写老浏览器不支持（Chrome<87），
-        会导致元素尺寸归零、图片完全不显示。用四方向写法替代。 ══ */
-  body::before{
-    top:0 !important;
-    right:0 !important;
-    bottom:0 !important;
-    left:0 !important;
-  }
-  body .grid .art,
-  .art{
-    top:0 !important;
-    right:0 !important;
-    bottom:0 !important;
-    left:0 !important;
-  }
-  .ph{
-    top:0 !important;
-    right:0 !important;
-    bottom:0 !important;
-    left:0 !important;
-  }
-  .grid figure > img,
-  .grid figure > .art{
-    top:0 !important;right:0 !important;bottom:0 !important;left:0 !important;
-  }
-
-  /* 图片元素本身也给个兜底尺寸（防 display 异常） */
-  .art{
-    width:100% !important;
-    height:100% !important;
-    position:absolute !important;
-    display:block !important;
-  }
-
-  /* ── 点击看完整图（灯箱） ── */
-  .lb-mask{
-    position:fixed !important;
-    top:0 !important;right:0 !important;bottom:0 !important;left:0 !important;
-    background:rgba(8,8,16,.94);
-    z-index:99999;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    cursor:zoom-out;
-    padding:24px;
-  }
-  .lb-mask.on{display:flex;}
-  .lb-mask img{
-    max-width:96vw;
-    max-height:92vh;
-    object-fit:contain;
-    border-radius:8px;
-    box-shadow:0 20px 80px rgba(0,0,0,.8);
-  }
-  .lb-close{
-    position:absolute;
-    top:18px;right:24px;
-    color:#fff;font-size:30px;line-height:1;
-    opacity:.7;cursor:pointer;
-    font-family:sans-serif;
-  }
-  .grid figure{cursor:zoom-in;}
-
-  /* ══ 关键修复：彻底禁用混合模式 ══
-     小米/部分国产浏览器对 mix-blend-mode 实现有 bug，
-     会把整张图算成纯黑。无条件覆盖，不加任何 @supports 判断。 */
-  .art,
-  .ph,
-  .slot img,
-  body .grid .art,
-  body .grid .ph{
-    mix-blend-mode:normal !important;
-    -webkit-mix-blend-mode:normal !important;
-  }
-  /* 占位符改用透明度控制，不再依赖混合模式 */
-  body .grid .ph{
-    opacity:.55 !important;
-    background-color:transparent !important;
-  }
-
-  /* ── 灯箱图片尺寸（强覆盖，防止被其他规则干扰） ── */
-  .lb-mask img{
-    max-width:94vw !important;
-    max-height:90vh !important;
-    width:auto !important;
-    height:auto !important;
-    object-fit:contain !important;
-    display:block !important;
-    position:static !important;
-    border-radius:6px !important;
-    box-shadow:0 20px 80px rgba(0,0,0,.85) !important;
-  }
+  .side-idx{font-size:9px;}
+  .side-name{font-size:12px;line-height:1.3;white-space:nowrap;}
+  .side-cnt{font-size:9px;margin-left:0;}
+  .ppt-sq{width:70px;height:auto;min-height:64px;margin:0;border-radius:14px;flex-shrink:0;}
+  .stage{width:100%;max-width:100%;}
+  .grid{max-width:100%;}
+  .wrap{padding:0 16px 68px;}
+  .work-tabs{padding:8px;gap:6px;top:8px;border-radius:14px;}
+  .work-tabs label{min-width:0;padding:9px 12px;font-size:12px;gap:6px;}
+}
+@media(max-width:600px){
+  body::before{background-attachment:scroll;opacity:.45;}
+  header{padding:36px 0 28px;}
+  h1{font-size:28px;}
+  .subtitle{font-size:13px;}
+  .meta{gap:16px 28px;margin-top:24px;padding-top:18px;}
+  .work-tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;}
+  .work-tabs label{padding:9px 8px;font-size:12px;}
+  .stage-tag{display:none;}
+  .ppt-sq{width:60px;}
+  .ppt-sq .t{font-size:11px;}
+  .ppt-sq .s{display:none;}
+  .fig-cap{padding:7px 10px;font-size:11px;}
+  .fig-zoom{display:none;}
+  .lb-mask{padding:52px 14px 68px;}
+  .lb-prev{left:8px;width:36px;height:36px;font-size:18px;}
+  .lb-next{right:8px;width:36px;height:36px;font-size:18px;}
+  .lb-close{top:12px;right:12px;width:38px;height:38px;}
+  .lb-zoom{top:12px;right:58px;width:38px;height:38px;}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
+}
 </style>
 </head>
 <body>
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">视觉传达设计 · 字体设计课程</div>
+    <div class="header-top">
+      <div class="eyebrow">视觉传达设计 · 字体设计课程</div>
+      <div class="course-pill"><span class="dot"></span><span>3 / 4 阶段归档 · 43 件作品</span></div>
+    </div>
     <h1>字体设计</h1>
-    <dl class="meta"><div><dt>学号</dt><dd>24130745009</dd></div><div><dt>姓名</dt><dd>温博文</dd></div><div><dt>家乡</dt><dd>江西  赣州</dd></div></dl>
+    <p class="subtitle">线构成研究 · 云南少数民族字母 · 衬线与无衬线</p>
+    <dl class="meta">
+      <div><dt>学号</dt><dd>24130745009</dd></div>
+      <div><dt>姓名</dt><dd>温博文</dd></div>
+      <div><dt>家乡</dt><dd>江西 赣州</dd></div>
+    </dl>
   </header>
 
   <input class="w-radio" type="radio" name="work" id="work-r1" checked>
@@ -701,88 +618,121 @@
   <input class="w-radio" type="radio" name="work" id="work-r3">
   <input class="w-radio" type="radio" name="work" id="work-r4">
 
-  <nav class="work-tabs">
-    <label for="work-r1">第一次作业</label>
-    <label for="work-r2">第二次作业</label>
-    <label for="work-r3">第三次作业</label>
-    <label for="work-r4">第四次作业</label>
+  <nav class="work-tabs" aria-label="作业切换">
+    <label for="work-r1"><span class="tab-num">01</span><span>第一次作业</span><span class="tab-cnt">30</span></label>
+    <label for="work-r2"><span class="tab-num">02</span><span>第二次作业</span><span class="tab-cnt">7</span></label>
+    <label for="work-r3"><span class="tab-num">03</span><span>第三次作业</span><span class="tab-cnt">6</span></label>
+    <label for="work-r4"><span class="tab-num">04</span><span>第四次作业</span><span class="tab-cnt">待完成</span></label>
   </nav>
 
   <div class="works">
-<section class="work" id="work-w1">
-    <div class="stage-head"><h2>数字 字母 字体设计作业</h2></div>
-    
+
+  <!-- ═══════════ 第一次作业 ═══════════ -->
+  <section class="work work-w1" id="work-w1">
+    <div class="stage-head">
+      <h2>数字 字母 字体设计作业</h2>
+      <span class="stage-tag">手绘扫描 · 3 组共 30 个变体</span>
+    </div>
+
     <input class="g-radio" type="radio" name="grp-w1" id="w1-g0" checked>
     <input class="g-radio" type="radio" name="grp-w1" id="w1-g1">
     <input class="g-radio" type="radio" name="grp-w1" id="w1-g2">
     <div class="layout">
-      <div class="side-col" style="width:var(--side);flex-shrink:0;">
-        <nav class="side">
-
-      <label class="side-item" for="w1-g0">
-        <span class="side-idx">01</span>
-        <span class="side-name">单线构成</span>
-        <span class="side-cnt">10/10</span>
-      </label>
-      <label class="side-item" for="w1-g1">
-        <span class="side-idx">02</span>
-        <span class="side-name">双线构成</span>
-        <span class="side-cnt">10/10</span>
-      </label>
-      <label class="side-item" for="w1-g2">
-        <span class="side-idx">03</span>
-        <span class="side-name">复线构成</span>
-        <span class="side-cnt">10/10</span>
-      </label>
+      <div class="side-col">
+        <nav class="side" aria-label="第一次作业分组">
+          <label class="side-item" for="w1-g0">
+            <span class="side-idx">01</span>
+            <span class="side-name">单线构成</span>
+            <span class="side-cnt">10/10</span>
+          </label>
+          <label class="side-item" for="w1-g1">
+            <span class="side-idx">02</span>
+            <span class="side-name">双线构成</span>
+            <span class="side-cnt">10/10</span>
+          </label>
+          <label class="side-item" for="w1-g2">
+            <span class="side-idx">03</span>
+            <span class="side-name">复线构成</span>
+            <span class="side-cnt">10/10</span>
+          </label>
         </nav>
-<a class="ppt-btn ppt-sq" href="files/a83da2ed2a.pptx" download="字体构成作业-温博文.pptx" title="下载本作业 PPT" onclick="event.preventDefault();var a=this;fetch(a.href).then(function(r){return r.blob();}).then(function(b){var u=URL.createObjectURL(b);var l=document.createElement('a');l.href=u;l.download=a.getAttribute('download')||'download.pptx';document.body.appendChild(l);l.click();document.body.removeChild(l);setTimeout(function(){URL.revokeObjectURL(u);},8000);}).catch(function(){location.href=a.href;});"><span class="t">PPT</span><span class="s">3.1 MB</span><span class="a">↓</span></a>
+        <a class="ppt-btn ppt-sq" href="files/a83da2ed2a.pptx" download="字体构成作业-温博文.pptx" title="下载第一次作业 PPT" onclick="event.preventDefault();var a=this;fetch(a.href).then(function(r){return r.blob();}).then(function(b){var u=URL.createObjectURL(b);var l=document.createElement('a');l.href=u;l.download=a.getAttribute('download')||'download.pptx';document.body.appendChild(l);l.click();document.body.removeChild(l);setTimeout(function(){URL.revokeObjectURL(u);},8000);}).catch(function(){location.href=a.href;});"><span class="t">PPT</span><span class="s">3.1 MB</span><span class="a">↓</span></a>
       </div>
+
       <div class="stage">
-      <div class="group-panel" id="w1-p0">
-        <div class="stage-head"><h2>单线构成</h2><span class="stage-tag">1 条线完成 · 10 个变体</span></div>
-        <div class="grid"><figure data-idx="01"><div class="art" style="background-image:url('img/a1f81bf165.jpg')"></div></figure>
-          <figure data-idx="02"><div class="art" style="background-image:url('img/84af338453.jpg')"></div></figure>
-          <figure data-idx="03"><div class="art" style="background-image:url('img/fb6e8eae90.jpg')"></div></figure>
-          <figure data-idx="04"><div class="art" style="background-image:url('img/eda1ee88a4.jpg')"></div></figure>
-          <figure data-idx="05"><div class="art" style="background-image:url('img/4a35e99584.jpg')"></div></figure>
-          <figure data-idx="06"><div class="art" style="background-image:url('img/771e0b2895.jpg')"></div></figure>
-          <figure data-idx="07"><div class="art" style="background-image:url('img/0c10a79dbf.jpg')"></div></figure>
-          <figure data-idx="08"><div class="art" style="background-image:url('img/814e3be06f.jpg')"></div></figure>
-          <figure data-idx="09"><div class="art" style="background-image:url('img/778fa8f016.jpg')"></div></figure>
-          <figure data-idx="10"><div class="art" style="background-image:url('img/b781a3f4aa.jpg')"></div></figure></div>
-      </div>
-      <div class="group-panel" id="w1-p1">
-        <div class="stage-head"><h2>双线构成</h2><span class="stage-tag">2 条线完成 · 10 个变体</span></div>
-        <div class="grid"><figure data-idx="01"><div class="art" style="background-image:url('img/90a012e536.jpg')"></div></figure>
-          <figure data-idx="02"><div class="art" style="background-image:url('img/2e5c7aa38f.jpg')"></div></figure>
-          <figure data-idx="03"><div class="art" style="background-image:url('img/5712d68b1e.jpg')"></div></figure>
-          <figure data-idx="04"><div class="art" style="background-image:url('img/fc4780dbb0.jpg')"></div></figure>
-          <figure data-idx="05"><div class="art" style="background-image:url('img/6da44c122c.jpg')"></div></figure>
-          <figure data-idx="06"><div class="art" style="background-image:url('img/eef95de2b0.jpg')"></div></figure>
-          <figure data-idx="07"><div class="art" style="background-image:url('img/75c7214c66.jpg')"></div></figure>
-          <figure data-idx="08"><div class="art" style="background-image:url('img/1d5349a137.jpg')"></div></figure>
-          <figure data-idx="09"><div class="art" style="background-image:url('img/7e5cd8aa04.jpg')"></div></figure>
-          <figure data-idx="10"><div class="art" style="background-image:url('img/41a49bc4fb.jpg')"></div></figure></div>
-      </div>
-      <div class="group-panel" id="w1-p2">
-        <div class="stage-head"><h2>复线构成</h2><span class="stage-tag">3 根及以上 · 10 个变体</span></div>
-        <div class="grid"><figure data-idx="01"><div class="art" style="background-image:url('img/7dbbd401e3.jpg')"></div></figure>
-          <figure data-idx="02"><div class="art" style="background-image:url('img/377ebe0fbb.jpg')"></div></figure>
-          <figure data-idx="03"><div class="art" style="background-image:url('img/3de24bc8f5.jpg')"></div></figure>
-          <figure data-idx="04"><div class="art" style="background-image:url('img/627740a82f.jpg')"></div></figure>
-          <figure data-idx="05"><div class="art" style="background-image:url('img/effb677f8e.jpg')"></div></figure>
-          <figure data-idx="06"><div class="art" style="background-image:url('img/8eb0c2f01c.jpg')"></div></figure>
-          <figure data-idx="07"><div class="art" style="background-image:url('img/6d90a28308.jpg')"></div></figure>
-          <figure data-idx="08"><div class="art" style="background-image:url('img/712d9a5d6d.jpg')"></div></figure>
-          <figure data-idx="09"><div class="art" style="background-image:url('img/1d8ada8ab6.jpg')"></div></figure>
-          <figure data-idx="10"><div class="art" style="background-image:url('img/f4c6969b41.jpg')"></div></figure></div>
-      </div>
+        <div class="group-panel" id="w1-p0">
+          <div class="stage-head"><h2>单线构成</h2><span class="stage-tag">1 条线完成 · 10 个变体</span></div>
+          <div class="grid">
+            <figure data-idx="01"><div class="art"><img src="img/a1f81bf165.jpg" loading="lazy" decoding="async" alt="单线构成 变体 01"></div><figcaption class="fig-cap"><span class="fig-idx">01</span><span class="fig-title">单线构成 · 变体 01</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="02"><div class="art"><img src="img/84af338453.jpg" loading="lazy" decoding="async" alt="单线构成 变体 02"></div><figcaption class="fig-cap"><span class="fig-idx">02</span><span class="fig-title">单线构成 · 变体 02</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="03"><div class="art"><img src="img/fb6e8eae90.jpg" loading="lazy" decoding="async" alt="单线构成 变体 03"></div><figcaption class="fig-cap"><span class="fig-idx">03</span><span class="fig-title">单线构成 · 变体 03</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="04"><div class="art"><img src="img/eda1ee88a4.jpg" loading="lazy" decoding="async" alt="单线构成 变体 04"></div><figcaption class="fig-cap"><span class="fig-idx">04</span><span class="fig-title">单线构成 · 变体 04</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="05"><div class="art"><img src="img/4a35e99584.jpg" loading="lazy" decoding="async" alt="单线构成 变体 05"></div><figcaption class="fig-cap"><span class="fig-idx">05</span><span class="fig-title">单线构成 · 变体 05</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="06"><div class="art"><img src="img/771e0b2895.jpg" loading="lazy" decoding="async" alt="单线构成 变体 06"></div><figcaption class="fig-cap"><span class="fig-idx">06</span><span class="fig-title">单线构成 · 变体 06</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="07"><div class="art"><img src="img/0c10a79dbf.jpg" loading="lazy" decoding="async" alt="单线构成 变体 07"></div><figcaption class="fig-cap"><span class="fig-idx">07</span><span class="fig-title">单线构成 · 变体 07</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="08"><div class="art"><img src="img/814e3be06f.jpg" loading="lazy" decoding="async" alt="单线构成 变体 08"></div><figcaption class="fig-cap"><span class="fig-idx">08</span><span class="fig-title">单线构成 · 变体 08</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="09"><div class="art"><img src="img/778fa8f016.jpg" loading="lazy" decoding="async" alt="单线构成 变体 09"></div><figcaption class="fig-cap"><span class="fig-idx">09</span><span class="fig-title">单线构成 · 变体 09</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="10"><div class="art"><img src="img/b781a3f4aa.jpg" loading="lazy" decoding="async" alt="单线构成 变体 10"></div><figcaption class="fig-cap"><span class="fig-idx">10</span><span class="fig-title">单线构成 · 变体 10</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+          </div>
+        </div>
+
+        <div class="group-panel" id="w1-p1">
+          <div class="stage-head"><h2>双线构成</h2><span class="stage-tag">2 条线完成 · 10 个变体</span></div>
+          <div class="grid">
+            <figure data-idx="01"><div class="art"><img src="img/90a012e536.jpg" loading="lazy" decoding="async" alt="双线构成 变体 01"></div><figcaption class="fig-cap"><span class="fig-idx">01</span><span class="fig-title">双线构成 · 变体 01</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="02"><div class="art"><img src="img/2e5c7aa38f.jpg" loading="lazy" decoding="async" alt="双线构成 变体 02"></div><figcaption class="fig-cap"><span class="fig-idx">02</span><span class="fig-title">双线构成 · 变体 02</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="03"><div class="art"><img src="img/5712d68b1e.jpg" loading="lazy" decoding="async" alt="双线构成 变体 03"></div><figcaption class="fig-cap"><span class="fig-idx">03</span><span class="fig-title">双线构成 · 变体 03</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="04"><div class="art"><img src="img/fc4780dbb0.jpg" loading="lazy" decoding="async" alt="双线构成 变体 04"></div><figcaption class="fig-cap"><span class="fig-idx">04</span><span class="fig-title">双线构成 · 变体 04</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="05"><div class="art"><img src="img/6da44c122c.jpg" loading="lazy" decoding="async" alt="双线构成 变体 05"></div><figcaption class="fig-cap"><span class="fig-idx">05</span><span class="fig-title">双线构成 · 变体 05</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="06"><div class="art"><img src="img/eef95de2b0.jpg" loading="lazy" decoding="async" alt="双线构成 变体 06"></div><figcaption class="fig-cap"><span class="fig-idx">06</span><span class="fig-title">双线构成 · 变体 06</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="07"><div class="art"><img src="img/75c7214c66.jpg" loading="lazy" decoding="async" alt="双线构成 变体 07"></div><figcaption class="fig-cap"><span class="fig-idx">07</span><span class="fig-title">双线构成 · 变体 07</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="08"><div class="art"><img src="img/1d5349a137.jpg" loading="lazy" decoding="async" alt="双线构成 变体 08"></div><figcaption class="fig-cap"><span class="fig-idx">08</span><span class="fig-title">双线构成 · 变体 08</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="09"><div class="art"><img src="img/7e5cd8aa04.jpg" loading="lazy" decoding="async" alt="双线构成 变体 09"></div><figcaption class="fig-cap"><span class="fig-idx">09</span><span class="fig-title">双线构成 · 变体 09</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="10"><div class="art"><img src="img/41a49bc4fb.jpg" loading="lazy" decoding="async" alt="双线构成 变体 10"></div><figcaption class="fig-cap"><span class="fig-idx">10</span><span class="fig-title">双线构成 · 变体 10</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+          </div>
+        </div>
+
+        <div class="group-panel" id="w1-p2">
+          <div class="stage-head"><h2>复线构成</h2><span class="stage-tag">3 根及以上 · 10 个变体</span></div>
+          <div class="grid">
+            <figure data-idx="01"><div class="art"><img src="img/7dbbd401e3.jpg" loading="lazy" decoding="async" alt="复线构成 变体 01"></div><figcaption class="fig-cap"><span class="fig-idx">01</span><span class="fig-title">复线构成 · 变体 01</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="02"><div class="art"><img src="img/377ebe0fbb.jpg" loading="lazy" decoding="async" alt="复线构成 变体 02"></div><figcaption class="fig-cap"><span class="fig-idx">02</span><span class="fig-title">复线构成 · 变体 02</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="03"><div class="art"><img src="img/3de24bc8f5.jpg" loading="lazy" decoding="async" alt="复线构成 变体 03"></div><figcaption class="fig-cap"><span class="fig-idx">03</span><span class="fig-title">复线构成 · 变体 03</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="04"><div class="art"><img src="img/627740a82f.jpg" loading="lazy" decoding="async" alt="复线构成 变体 04"></div><figcaption class="fig-cap"><span class="fig-idx">04</span><span class="fig-title">复线构成 · 变体 04</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="05"><div class="art"><img src="img/effb677f8e.jpg" loading="lazy" decoding="async" alt="复线构成 变体 05"></div><figcaption class="fig-cap"><span class="fig-idx">05</span><span class="fig-title">复线构成 · 变体 05</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="06"><div class="art"><img src="img/8eb0c2f01c.jpg" loading="lazy" decoding="async" alt="复线构成 变体 06"></div><figcaption class="fig-cap"><span class="fig-idx">06</span><span class="fig-title">复线构成 · 变体 06</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="07"><div class="art"><img src="img/6d90a28308.jpg" loading="lazy" decoding="async" alt="复线构成 变体 07"></div><figcaption class="fig-cap"><span class="fig-idx">07</span><span class="fig-title">复线构成 · 变体 07</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="08"><div class="art"><img src="img/712d9a5d6d.jpg" loading="lazy" decoding="async" alt="复线构成 变体 08"></div><figcaption class="fig-cap"><span class="fig-idx">08</span><span class="fig-title">复线构成 · 变体 08</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="09"><div class="art"><img src="img/1d8ada8ab6.jpg" loading="lazy" decoding="async" alt="复线构成 变体 09"></div><figcaption class="fig-cap"><span class="fig-idx">09</span><span class="fig-title">复线构成 · 变体 09</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="10"><div class="art"><img src="img/f4c6969b41.jpg" loading="lazy" decoding="async" alt="复线构成 变体 10"></div><figcaption class="fig-cap"><span class="fig-idx">10</span><span class="fig-title">复线构成 · 变体 10</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+          </div>
+        </div>
       </div>
     </div>
   </section>
-<section class="work" id="work-w2">
-    <div class="stage-head"><h2>第二次作业 · 民族风格字母字体设计</h2></div>
-    <div class="work-note"><h3>调研</h3><p>取样范围：云南世居少数民族（共 25 个）。从中选出 7 个视觉符号辨识度最高的民族作为分组依据 —— 彝族（漆器几何 / 火纹）、白族（扎染波纹）、苗族（银饰几何）、傣族（竹楼与孔雀）、纳西族（东巴象形文）、佤族（木鼓与牛头）、藏族（藏红回纹）。取样来源为公开图像资料与博物馆展陈记录，按「轮廓 — 几何 — 节奏」三个维度做视觉提取，不复制原纹样。</p><h3>设计说明</h3><p>26 个拉丁字母是现成的结构骨架，适合作为视觉基因的容器。每组先提取该民族核心符号的几何秩序，再装入字母的笔画结构；配色取自各民族服饰与器物的主色，统一压暗、降饱和，收进同一套色域：米白 / 近黑 / 暗红 / 赭黄 / 靛蓝。</p><h3>局限</h3><p>本组只做视觉提取与形态重组，未做民族学层面的考据；色彩与符号均作简化处理，不指代具体支系与地域差异。</p></div>
+
+  <!-- ═══════════ 第二次作业 ═══════════ -->
+  <section class="work work-w2" id="work-w2">
+    <div class="stage-head">
+      <h2>第二次作业 · 民族风格字母字体设计</h2>
+      <span class="stage-tag">云南 7 民族 · 26 拉丁字母</span>
+    </div>
+
+    <div class="work-note">
+      <div class="note-card">
+        <h3><span>01</span>调研</h3>
+        <p>取样范围：云南世居少数民族（共 25 个）。选出 7 个视觉符号辨识度最高的民族分组 —— 彝族（漆器几何 / 火纹）、白族（扎染波纹）、苗族（银饰几何）、傣族（竹楼与孔雀）、纳西族（东巴象形文）、佤族（木鼓与牛头）、藏族（藏红回纹）。按「轮廓 — 几何 — 节奏」做视觉提取，不复制原纹样。</p>
+      </div>
+      <div class="note-card">
+        <h3><span>02</span>设计说明</h3>
+        <p>26 个拉丁字母是现成的结构骨架，适合作为视觉基因的容器。每组先提取该民族核心符号的几何秩序，再装入字母的笔画结构；配色取自各民族服饰与器物主色，统一压暗、降饱和，收进同一套色域：米白 / 近黑 / 暗红 / 赭黄 / 靛蓝。</p>
+      </div>
+      <div class="note-card">
+        <h3><span>03</span>局限</h3>
+        <p>本组只做视觉提取与形态重组，未做民族学层面的考据；色彩与符号均作简化处理，不指代具体支系与地域差异。</p>
+      </div>
+    </div>
+
     <input class="g-radio" type="radio" name="grp-w2" id="w2-g0" checked>
     <input class="g-radio" type="radio" name="grp-w2" id="w2-g1">
     <input class="g-radio" type="radio" name="grp-w2" id="w2-g2">
@@ -791,87 +741,111 @@
     <input class="g-radio" type="radio" name="grp-w2" id="w2-g5">
     <input class="g-radio" type="radio" name="grp-w2" id="w2-g6">
     <div class="layout">
-      <div class="side-col" style="width:var(--side);flex-shrink:0;">
-        <nav class="side">
-
-      <label class="side-item" for="w2-g0">
-        <span class="side-idx">01</span>
-        <span class="side-name">彝族</span>
-        <span class="side-cnt">1/1</span>
-      </label>
-      <label class="side-item" for="w2-g1">
-        <span class="side-idx">02</span>
-        <span class="side-name">白族</span>
-        <span class="side-cnt">1/1</span>
-      </label>
-      <label class="side-item" for="w2-g2">
-        <span class="side-idx">03</span>
-        <span class="side-name">苗族</span>
-        <span class="side-cnt">1/1</span>
-      </label>
-      <label class="side-item" for="w2-g3">
-        <span class="side-idx">04</span>
-        <span class="side-name">傣族</span>
-        <span class="side-cnt">1/1</span>
-      </label>
-      <label class="side-item" for="w2-g4">
-        <span class="side-idx">05</span>
-        <span class="side-name">纳西族</span>
-        <span class="side-cnt">1/1</span>
-      </label>
-      <label class="side-item" for="w2-g5">
-        <span class="side-idx">06</span>
-        <span class="side-name">佤族</span>
-        <span class="side-cnt">1/1</span>
-      </label>
-      <label class="side-item" for="w2-g6">
-        <span class="side-idx">07</span>
-        <span class="side-name">藏族</span>
-        <span class="side-cnt">1/1</span>
-      </label>
+      <div class="side-col">
+        <nav class="side" aria-label="第二次作业分组">
+          <label class="side-item" for="w2-g0"><span class="side-idx">01</span><span class="side-name">彝族</span><span class="side-cnt">1/1</span></label>
+          <label class="side-item" for="w2-g1"><span class="side-idx">02</span><span class="side-name">白族</span><span class="side-cnt">1/1</span></label>
+          <label class="side-item" for="w2-g2"><span class="side-idx">03</span><span class="side-name">苗族</span><span class="side-cnt">1/1</span></label>
+          <label class="side-item" for="w2-g3"><span class="side-idx">04</span><span class="side-name">傣族</span><span class="side-cnt">1/1</span></label>
+          <label class="side-item" for="w2-g4"><span class="side-idx">05</span><span class="side-name">纳西族</span><span class="side-cnt">1/1</span></label>
+          <label class="side-item" for="w2-g5"><span class="side-idx">06</span><span class="side-name">佤族</span><span class="side-cnt">1/1</span></label>
+          <label class="side-item" for="w2-g6"><span class="side-idx">07</span><span class="side-name">藏族</span><span class="side-cnt">1/1</span></label>
         </nav>
-<a class="ppt-btn ppt-sq" href="files/c656175725.pptx" download="字体构成作业-温博文-作业2.pptx" title="下载本作业 PPT" onclick="event.preventDefault();var a=this;fetch(a.href).then(function(r){return r.blob();}).then(function(b){var u=URL.createObjectURL(b);var l=document.createElement('a');l.href=u;l.download=a.getAttribute('download')||'download.pptx';document.body.appendChild(l);l.click();document.body.removeChild(l);setTimeout(function(){URL.revokeObjectURL(u);},8000);}).catch(function(){location.href=a.href;});"><span class="t">PPT</span><span class="s">5.1 MB</span><span class="a">↓</span></a>
+        <a class="ppt-btn ppt-sq" href="files/c656175725.pptx" download="字体构成作业-温博文-作业2.pptx" title="下载第二次作业 PPT" onclick="event.preventDefault();var a=this;fetch(a.href).then(function(r){return r.blob();}).then(function(b){var u=URL.createObjectURL(b);var l=document.createElement('a');l.href=u;l.download=a.getAttribute('download')||'download.pptx';document.body.appendChild(l);l.click();document.body.removeChild(l);setTimeout(function(){URL.revokeObjectURL(u);},8000);}).catch(function(){location.href=a.href;});"><span class="t">PPT</span><span class="s">5.1 MB</span><span class="a">↓</span></a>
       </div>
+
       <div class="stage">
-      <div class="group-panel skin-yi" id="w2-p0">
-        <div class="stage-head"><h2>彝族</h2><span class="stage-tag">漆器几何 · 黑红黄</span></div>
-        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/6ae83a9595.jpg')"></div></figure></div>
-      </div>
-      <div class="group-panel skin-bai" id="w2-p1">
-        <div class="stage-head"><h2>白族</h2><span class="stage-tag">扎染波纹 · 蓝白</span></div>
-        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/7909a56012.jpg')"></div></figure></div>
-      </div>
-      <div class="group-panel skin-miao" id="w2-p2">
-        <div class="stage-head"><h2>苗族</h2><span class="stage-tag">银饰几何 · 银黑</span></div>
-        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/96366b34ab.jpg')"></div></figure></div>
-      </div>
-      <div class="group-panel skin-dai" id="w2-p3">
-        <div class="stage-head"><h2>傣族</h2><span class="stage-tag">竹节孔雀 · 松石绿</span></div>
-        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/cebdfc9a53.jpg')"></div></figure></div>
-      </div>
-      <div class="group-panel skin-naxi" id="w2-p4">
-        <div class="stage-head"><h2>纳西族</h2><span class="stage-tag">东巴文骨架 · 大地棕</span></div>
-        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/1db5addbb7.jpg')"></div></figure></div>
-      </div>
-      <div class="group-panel skin-wa" id="w2-p5">
-        <div class="stage-head"><h2>佤族</h2><span class="stage-tag">木鼓牛角 · 黑红</span></div>
-        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/1f1c8855ab.jpg')"></div></figure></div>
-      </div>
-      <div class="group-panel skin-zang" id="w2-p6">
-        <div class="stage-head"><h2>藏族</h2><span class="stage-tag">藏红回纹 · 红黄</span></div>
-        <div class="grid wide"><figure data-idx="01"><div class="art" style="background-image:url('img/335fbfa941.jpg')"></div></figure></div>
-      </div>
+        <div class="group-panel skin-yi" id="w2-p0">
+          <div class="stage-head"><h2>彝族</h2><span class="stage-tag">漆器几何 · 黑红黄</span></div>
+          <div class="grid"><figure data-idx="01"><div class="art"><img src="img/6ae83a9595.jpg" loading="lazy" decoding="async" alt="彝族 漆器几何"></div><figcaption class="fig-cap"><span class="fig-idx">01</span><span class="fig-title">彝族 YI · A–D（漆器几何 / 火纹）</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure></div>
+        </div>
+        <div class="group-panel skin-bai" id="w2-p1">
+          <div class="stage-head"><h2>白族</h2><span class="stage-tag">扎染波纹 · 蓝白</span></div>
+          <div class="grid"><figure data-idx="01"><div class="art"><img src="img/7909a56012.jpg" loading="lazy" decoding="async" alt="白族 扎染波纹"></div><figcaption class="fig-cap"><span class="fig-idx">02</span><span class="fig-title">白族 BAI · E–H（扎染波纹 / 蓝白）</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure></div>
+        </div>
+        <div class="group-panel skin-miao" id="w2-p2">
+          <div class="stage-head"><h2>苗族</h2><span class="stage-tag">银饰几何 · 银黑</span></div>
+          <div class="grid"><figure data-idx="01"><div class="art"><img src="img/96366b34ab.jpg" loading="lazy" decoding="async" alt="苗族 银饰几何"></div><figcaption class="fig-cap"><span class="fig-idx">03</span><span class="fig-title">苗族 MIAO · 银饰几何</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure></div>
+        </div>
+        <div class="group-panel skin-dai" id="w2-p3">
+          <div class="stage-head"><h2>傣族</h2><span class="stage-tag">竹节孔雀 · 松石绿</span></div>
+          <div class="grid"><figure data-idx="01"><div class="art"><img src="img/cebdfc9a53.jpg" loading="lazy" decoding="async" alt="傣族 竹节孔雀"></div><figcaption class="fig-cap"><span class="fig-idx">04</span><span class="fig-title">傣族 DAI · I–L（竹节孔雀 / 象纹）</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure></div>
+        </div>
+        <div class="group-panel skin-naxi" id="w2-p4">
+          <div class="stage-head"><h2>纳西族</h2><span class="stage-tag">东巴文骨架 · 大地棕</span></div>
+          <div class="grid"><figure data-idx="01"><div class="art"><img src="img/1db5addbb7.jpg" loading="lazy" decoding="async" alt="纳西族 东巴文骨架"></div><figcaption class="fig-cap"><span class="fig-idx">05</span><span class="fig-title">纳西族 NAXI · 东巴文骨架</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure></div>
+        </div>
+        <div class="group-panel skin-wa" id="w2-p5">
+          <div class="stage-head"><h2>佤族</h2><span class="stage-tag">木鼓牛角 · 黑红</span></div>
+          <div class="grid"><figure data-idx="01"><div class="art"><img src="img/1f1c8855ab.jpg" loading="lazy" decoding="async" alt="佤族 木鼓牛角"></div><figcaption class="fig-cap"><span class="fig-idx">06</span><span class="fig-title">佤族 WA · 木鼓牛角</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure></div>
+        </div>
+        <div class="group-panel skin-zang" id="w2-p6">
+          <div class="stage-head"><h2>藏族</h2><span class="stage-tag">藏红回纹 · 红黄</span></div>
+          <div class="grid"><figure data-idx="01"><div class="art"><img src="img/335fbfa941.jpg" loading="lazy" decoding="async" alt="藏族 藏红回纹"></div><figcaption class="fig-cap"><span class="fig-idx">07</span><span class="fig-title">藏族 ZANG · 藏红回纹</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure></div>
+        </div>
       </div>
     </div>
   </section>
-<section class="work" id="work-w3">
-      
-      <div class="stub"><div class="icon">🚧</div><h3>第三次作业</h3><p>此处预留 · 待完成</p></div>
-    </section>
-<section class="work" id="work-w4">
-      
-      <div class="stub"><div class="icon">🚧</div><h3>第四次作业</h3><p>此处预留 · 待完成</p></div>
-    </section>
+
+  <!-- ═══════════ 第三次作业 ═══════════ -->
+  <section class="work work-w3" id="work-w3">
+    <div class="stage-head">
+      <h2>第三次作业 · 衬线与无衬线字体设计</h2>
+      <span class="stage-tag">26 大写 · 26 小写 · 26 民族拼音</span>
+    </div>
+
+    <input class="g-radio" type="radio" name="grp-w3" id="w3-g0" checked>
+    <input class="g-radio" type="radio" name="grp-w3" id="w3-g1">
+    <input class="g-radio" type="radio" name="grp-w3" id="w3-g2">
+    <div class="layout">
+      <div class="side-col">
+        <nav class="side" aria-label="第三次作业分组">
+          <label class="side-item" for="w3-g0"><span class="side-idx">01</span><span class="side-name">衬线体</span><span class="side-cnt">2/2</span></label>
+          <label class="side-item" for="w3-g1"><span class="side-idx">02</span><span class="side-name">无衬线体</span><span class="side-cnt">2/2</span></label>
+          <label class="side-item" for="w3-g2"><span class="side-idx">03</span><span class="side-name">民族拼音</span><span class="side-cnt">2/2</span></label>
+        </nav>
+      </div>
+
+      <div class="stage">
+        <div class="group-panel" id="w3-p0">
+          <div class="stage-head"><h2>衬线体</h2><span class="stage-tag">Agency 骨架描边 · Segoe Script 影线双钩</span></div>
+          <div class="grid">
+            <figure data-idx="01"><div class="art"><img src="img/w3-1-upper.png" loading="lazy" decoding="async" alt="大写 A-Z Agency 骨架描边"></div><figcaption class="fig-cap"><span class="fig-idx">01</span><span class="fig-title">大写 A–Z（Agency 骨架 · 描边空心）</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="02"><div class="art"><img src="img/w3-2-lower.png" loading="lazy" decoding="async" alt="小写 a-z Segoe Script 影线双钩"></div><figcaption class="fig-cap"><span class="fig-idx">02</span><span class="fig-title">小写 a–z（Segoe Script 骨架 · 影线双钩）</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+          </div>
+        </div>
+        <div class="group-panel" id="w3-p1">
+          <div class="stage-head"><h2>无衬线体</h2><span class="stage-tag">斜 14° + 压窄 92% · 大小写完整字表</span></div>
+          <div class="grid">
+            <figure data-idx="01"><div class="art"><img src="img/w3-3-upper-sans.png" loading="lazy" decoding="async" alt="大写 A-Z 无衬线 斜14度压窄92%"></div><figcaption class="fig-cap"><span class="fig-idx">01</span><span class="fig-title">大写 A–Z · 无衬线（斜 14° + 压窄 92%）</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="02"><div class="art"><img src="img/w3-4-lower-sans.png" loading="lazy" decoding="async" alt="小写 a-z 无衬线 斜14度压窄92%"></div><figcaption class="fig-cap"><span class="fig-idx">02</span><span class="fig-title">小写 a–z · 无衬线（斜 14° + 压窄 92%）</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+          </div>
+        </div>
+        <div class="group-panel" id="w3-p2">
+          <div class="stage-head"><h2>民族拼音</h2><span class="stage-tag">云南 26 个民族名拼音拼写</span></div>
+          <div class="grid">
+            <figure data-idx="01"><div class="art"><img src="img/w3-5-names-a.png" loading="lazy" decoding="async" alt="26个民族的拼音 上"></div><figcaption class="fig-cap"><span class="fig-idx">01</span><span class="fig-title">26 个民族的拼音（上 · 13 个）</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+            <figure data-idx="02"><div class="art"><img src="img/w3-6-names-b.png" loading="lazy" decoding="async" alt="26个民族的拼音 下"></div><figcaption class="fig-cap"><span class="fig-idx">02</span><span class="fig-title">26 个民族的拼音（下 · 13 个）</span><span class="fig-zoom">查看大图 ⤢</span></figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 第四次作业（预留占位） ═══════════ -->
+  <section class="work work-w4" id="work-w4">
+    <div class="stage-head">
+      <h2>第四次作业</h2>
+      <span class="stage-tag">预留栏目 · 待补充</span>
+    </div>
+    <div class="stub">
+      <span class="stub-badge">WORK 04 · 筹备中</span>
+      <div class="stub-mascot"><img src="img/d953362a31.jpg" loading="lazy" decoding="async" alt="第四次作业预留插图"></div>
+      <h3>第四次作业</h3>
+      <p>此处预留 · 待完成。后续做好作品图后可直接放入 img/ 并填入本栏目。</p>
+    </div>
+  </section>
+
   </div>
 
   <footer>
@@ -879,6 +853,10 @@
     <span>手绘 · 扫描 · 数字归档</span>
   </footer>
 </div>
+
+<button class="to-top" id="toTop" type="button" aria-label="返回顶部" title="返回顶部">↑</button>
+
+<!-- ═══════════ JS：侧栏状态同步 & 切换平滑定位 ═══════════ -->
 <script>
 (function(){
   function sync(){
@@ -889,39 +867,135 @@
     });
   }
   document.addEventListener('change', function(e){
-    if (e.target && e.target.classList && e.target.classList.contains('g-radio')) sync();
+    if (!e.target || !e.target.classList) return;
+    if (e.target.classList.contains('g-radio')) {
+      sync();
+      var stage = e.target.closest('.work');
+      var top = stage ? stage.getBoundingClientRect().top + window.scrollY - 82 : 0;
+      if (stage && window.scrollY > top + 40) window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+    if (e.target.classList.contains('w-radio')) {
+      var tabs = document.querySelector('.work-tabs');
+      if (tabs && window.scrollY > tabs.offsetTop + 20) {
+        window.scrollTo({ top: tabs.offsetTop - 16, behavior: 'smooth' });
+      }
+    }
   });
   sync();
+
+  var toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', function(){
+    toTop.classList.toggle('show', window.scrollY > 360);
+  }, { passive: true });
+  toTop.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 })();
 </script>
+
+<!-- ═══════════ JS：画廊灯箱（上下切换 / 快捷键 / 手势 / 原图缩放） ═══════════ -->
 <script>
 (function(){
   var mask = document.createElement('div');
   mask.className = 'lb-mask';
-  mask.innerHTML = '<span class="lb-close">&times;</span><img alt="">';
+  mask.innerHTML =
+    '<button class="lb-btn lb-zoom" type="button" aria-label="切换原图大小" title="切换原图缩放">⤢</button>' +
+    '<button class="lb-btn lb-close" type="button" aria-label="关闭">&times;</button>' +
+    '<button class="lb-btn lb-prev" type="button" aria-label="上一张">&#8249;</button>' +
+    '<div class="lb-stage"><img alt=""></div>' +
+    '<button class="lb-btn lb-next" type="button" aria-label="下一张">&#8250;</button>' +
+    '<div class="lb-bar"><span class="lb-cnt"></span><span class="lb-txt"></span></div>';
   document.body.appendChild(mask);
-  var imgEl = mask.querySelector('img');
 
-  function open(url){
-    imgEl.src = url;
-    mask.classList.add('on');
+  var imgEl = mask.querySelector('.lb-stage img');
+  var prevBtn = mask.querySelector('.lb-prev');
+  var nextBtn = mask.querySelector('.lb-next');
+  var zoomBtn = mask.querySelector('.lb-zoom');
+  var closeBtn = mask.querySelector('.lb-close');
+  var cntEl = mask.querySelector('.lb-cnt');
+  var txtEl = mask.querySelector('.lb-txt');
+
+  var items = [];
+  var idx = 0;
+
+  function pad(n){ return n < 10 ? '0' + n : String(n); }
+
+  function render(){
+    if (!items.length) return;
+    var cur = items[idx];
+    mask.classList.remove('zoomed');
+    imgEl.src = cur.src;
+    imgEl.alt = cur.title;
+    cntEl.textContent = pad(idx + 1) + ' / ' + pad(items.length);
+    txtEl.textContent = cur.title;
+    var single = items.length <= 1;
+    prevBtn.hidden = single;
+    nextBtn.hidden = single;
   }
-  function close(){ mask.classList.remove('on'); imgEl.src = ''; }
 
+  function openList(list, startIdx){
+    items = list;
+    idx = Math.max(0, Math.min(startIdx, list.length - 1));
+    render();
+    mask.classList.add('on');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close(){
+    mask.classList.remove('on', 'zoomed');
+    imgEl.src = '';
+    document.body.style.overflow = '';
+  }
+
+  function step(delta){
+    if (items.length <= 1) return;
+    idx = (idx + delta + items.length) % items.length;
+    render();
+  }
+
+  function toggleZoom(){ mask.classList.toggle('zoomed'); }
+
+  closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', function(e){ e.stopPropagation(); step(-1); });
+  nextBtn.addEventListener('click', function(e){ e.stopPropagation(); step(1); });
+  zoomBtn.addEventListener('click', function(e){ e.stopPropagation(); toggleZoom(); });
+  imgEl.addEventListener('click', function(e){ e.stopPropagation(); toggleZoom(); });
   mask.addEventListener('click', function(e){
-    if (e.target === mask || e.target.className === 'lb-close') close();
+    if (e.target === mask || e.target.classList.contains('lb-stage')) close();
   });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
 
-  document.querySelectorAll('.grid figure').forEach(function(fig){
-    fig.addEventListener('click', function(){
-      var art = fig.querySelector('.art');
-      if (!art) return;
-      var bg = art.style.backgroundImage || '';
-      if (bg.indexOf('url(') === -1) return;
-      var url = bg.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-      open(url);
-    });
+  document.addEventListener('keydown', function(e){
+    if (!mask.classList.contains('on')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') step(-1);
+    else if (e.key === 'ArrowRight') step(1);
+  });
+
+  var touchX = 0;
+  mask.addEventListener('touchstart', function(e){
+    if (e.touches.length === 1) touchX = e.touches[0].clientX;
+  }, { passive: true });
+  mask.addEventListener('touchend', function(e){
+    if (mask.classList.contains('zoomed') || e.changedTouches.length !== 1) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 48) step(dx > 0 ? -1 : 1);
+  }, { passive: true });
+
+  document.addEventListener('click', function(e){
+    var fig = e.target.closest('.grid figure');
+    if (!fig) return;
+    var scope = fig.closest('.group-panel') || fig.closest('.work') || document;
+    var figs = Array.prototype.slice.call(scope.querySelectorAll('.grid figure'));
+    var list = figs.map(function(f){
+      var img = f.querySelector('.art img');
+      var cap = f.querySelector('.fig-title');
+      return {
+        src: img ? img.getAttribute('src') : '',
+        title: cap ? cap.textContent : (img ? img.alt : '')
+      };
+    }).filter(function(item){ return !!item.src; });
+    var startIdx = figs.indexOf(fig);
+    if (list.length) openList(list, startIdx);
   });
 })();
 </script>
